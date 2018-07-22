@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -16,27 +15,40 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     ArrayList<Movie> movies;
     Context context;
+    int type;
 
-    public MovieAdapter(ArrayList<Movie> movies, Context context) {
+    public MovieAdapter(ArrayList<Movie> movies, Context context, int type) {
         this.movies = movies;
         this.context = context;
+        this.type = type;
     }
 
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View movieLayout = inflater.inflate(R.layout.row_layout,null);
-        return new MovieViewHolder(movieLayout);
+        View movieLayout;
+        if(type == 0){
+             movieLayout = inflater.inflate(R.layout.nowshowing_row_layout,null);
+        }else{
+            movieLayout = inflater.inflate(R.layout.all_row_layout,null);
+        }
+
+        return new MovieViewHolder(movieLayout,type);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movies.get(position);
 //        Toast.makeText(context, movie.title, Toast.LENGTH_SHORT).show();
-        holder.titleTV.setText(movie.title);
-        holder.releaseDateTV.setText(movie.releaseDate);
-        Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.backdropPath).resize(350,200).centerCrop().into(holder.image);
+        if(type==0){
+            holder.titleTV.setText(movie.title);
+            Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.backdropPath).resize(360,200).centerCrop().into(holder.image);
+        }else{
+            Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.posterPath).resize(70,80).centerCrop().into(holder.posterImageView);
+            holder.nameTV.setText(movie.title);
+        }
+
     }
 
     @Override

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/airing_today"
+        android:id="@+id/airingToday"
+        android:title="Airing Today" />
+
+    <item
+        android:icon="@drawable/on_air"
+        android:id="@+id/onAir"
+        android:title="On Air" />
+
+    <item
+        android:icon="@drawable/top_rated_tv"
+        android:id="@+id/tvTopRated"
+        android:title="Top rated" />
+
+    <item
+        android:icon="@drawable/upcoming_tv"
+        android:id="@+id/tvPopular"
+        android:title="Popular" />
+
+</menu>

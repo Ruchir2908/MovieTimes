@@ -11,6 +11,7 @@ public class ApiClient {
 
     private static Retrofit retrofit;
     private static MovieTimesService service;
+    private static TVTimesService TVservice;
 
     public static Retrofit getRetrofit(){
         if(retrofit==null){
@@ -29,6 +30,13 @@ public class ApiClient {
             service = getRetrofit().create(MovieTimesService.class);
         }
         return service;
+    }
+
+    public static TVTimesService getTVservice(){
+        if(TVservice == null){
+            TVservice = getRetrofit().create(TVTimesService.class);
+        }
+        return TVservice;
     }
 
 }

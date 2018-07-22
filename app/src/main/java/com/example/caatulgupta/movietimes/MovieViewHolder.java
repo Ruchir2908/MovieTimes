@@ -7,14 +7,19 @@ import android.widget.TextView;
 
 public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView image;
-    TextView titleTV, releaseDateTV;
+    ImageView image,posterImageView;
+    TextView titleTV, releaseDateTV, nameTV;
 
 
-    public MovieViewHolder(View itemView) {
+    public MovieViewHolder(View itemView, int type) {
         super(itemView);
-        image = itemView.findViewById(R.id.image);
-        titleTV = itemView.findViewById(R.id.titleTV);
-        releaseDateTV = itemView.findViewById(R.id.releaseDateTV);
+        if(type==0){
+            image = itemView.findViewById(R.id.image);
+            titleTV = itemView.findViewById(R.id.titleTV);
+        }else{
+            posterImageView = itemView.findViewById(R.id.posterImageView);
+            nameTV = itemView.findViewById(R.id.nameTextView);
+        }
+
     }
 }

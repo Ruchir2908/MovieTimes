@@ -11,9 +11,4 @@ public class MovieCategory {
     @SerializedName("total_results")
     int totalMovies;
     int page;
-//    ArrayList<String> dates;
-
-//    ArrayList<Movie> results;
-
-//    MovieResults results;
 }
