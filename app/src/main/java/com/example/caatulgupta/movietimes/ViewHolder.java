@@ -5,13 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MovieViewHolder extends RecyclerView.ViewHolder {
+public class ViewHolder extends RecyclerView.ViewHolder {
 
     ImageView image,posterImageView;
     TextView titleTV, releaseDateTV, nameTV;
 
 
-    public MovieViewHolder(View itemView, int type) {
+    public ViewHolder(View itemView, int type) {
         super(itemView);
         if(type==0){
             image = itemView.findViewById(R.id.image);

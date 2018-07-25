@@ -24,7 +24,7 @@ public class MovieUpcomingFragment extends Fragment {
     RecyclerView upcomingRecylclerView;
     Retrofit retrofit;
     MovieTimesService service;
-    MovieAdapter adapter;
+    Adapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
 
     public MovieUpcomingFragment() {
@@ -38,7 +38,7 @@ public class MovieUpcomingFragment extends Fragment {
         upcomingRecylclerView = output.findViewById(R.id.upcomingRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getService();
-        adapter = new MovieAdapter(movies,getContext(),0);
+        adapter = new Adapter(movies,null,getContext(),0,"movie");
         upcomingRecylclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

@@ -9,12 +9,13 @@
         app:cardBackgroundColor="@color/cardview_dark_background"
         android:layout_centerInParent="true"
         app:cardCornerRadius="5dp"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
         <RelativeLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
             <ImageView

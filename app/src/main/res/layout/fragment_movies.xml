@@ -21,4 +21,15 @@ tools:context=".MoviesFragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--<android.support.design.widget.BottomNavigationView-->
+        <!--android:id="@+id/movieNavigation"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="54dp"-->
+        <!--android:background="?android:attr/windowBackground"-->
+        <!--android:visibility="gone"-->
+        <!--app:layout_constraintBottom_toBottomOf="@+id/container"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:menu="@menu/movie_navigation" />-->
+
 </android.support.constraint.ConstraintLayout>

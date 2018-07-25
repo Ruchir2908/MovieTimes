@@ -2,9 +2,10 @@ package com.example.caatulgupta.movietimes;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Movie {
+public class Movie implements Serializable{
 
     @SerializedName("vote_count")
     int voteCount;

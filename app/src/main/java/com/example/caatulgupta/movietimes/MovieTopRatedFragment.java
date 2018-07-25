@@ -24,7 +24,7 @@ public class MovieTopRatedFragment extends Fragment {
     RecyclerView topRatedRecyclerView;
     Retrofit retrofit;
     MovieTimesService service;
-    MovieAdapter adapter;
+    Adapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
 
     public MovieTopRatedFragment() {
@@ -38,7 +38,7 @@ public class MovieTopRatedFragment extends Fragment {
         topRatedRecyclerView = output.findViewById(R.id.topRatedRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getService();
-        adapter = new MovieAdapter(movies,getContext(),0);
+        adapter = new Adapter(movies,null,getContext(),0,"movie");
         topRatedRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

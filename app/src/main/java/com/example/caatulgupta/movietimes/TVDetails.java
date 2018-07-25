@@ -2,16 +2,18 @@ package com.example.caatulgupta.movietimes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -21,18 +23,18 @@ import retrofit2.Retrofit;
 
 import static com.example.caatulgupta.movietimes.MainActivity.API_KEY;
 
-public class MovieDetails extends AppCompatActivity {
+public class TVDetails extends AppCompatActivity {
 
     TextView releaseDateTV, languageTV, ratingTV, genresTV, overviewTV;
     RecyclerView trailersRV, castRV, recommendationsRV, similarRV;
-    ImageView posterImageView,backdropImageView;
+    ImageView posterImageView, backdropImageView;
 
     Retrofit retrofit;
-    MovieTimesService service;
-    Adapter similarAdapter, trailerAdapter, recommendationsAdapter;
+    TVTimesService service;
+    Adapter similarAdapter, recommendationsAdapter;
     CastAdapter castAdapter;
-    ArrayList<Movie> similarMovies = new ArrayList<>();
-    ArrayList<Movie> recommendationsMovies = new ArrayList<>();
+    ArrayList<TV> similarShows = new ArrayList<>();
+    ArrayList<TV> recommendationsShows = new ArrayList<>();
     ArrayList<Cast> casts = new ArrayList<>();
 
     void findById(){
@@ -45,37 +47,34 @@ public class MovieDetails extends AppCompatActivity {
         castRV = findViewById(R.id.castRecyclerView);
         similarRV = findViewById(R.id.similarRecyclerView);
         recommendationsRV = findViewById(R.id.recommendationsRecyclerView);
-        posterImageView = findViewById(R.id.posterImageView);
+        posterImageView= findViewById(R.id.posterImageView);
         backdropImageView = findViewById(R.id.backdropImageView);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        setContentView(R.layout.activity_tvdetails);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         findById();
 
-
-
         Intent intent = getIntent();
-        Movie movie = (Movie)intent.getSerializableExtra("movie");
-        releaseDateTV.setText(movie.releaseDate);
-        languageTV.setText(movie.language);
-        ratingTV.setText(movie.avgVote+"");
-        genresTV.setText(movie.genreIds+"");
-        overviewTV.setText(movie.overview);
-        Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.posterPath).resize(400,550).centerCrop().into(posterImageView);
-        Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.backdropPath).resize(600,500).centerCrop().into(backdropImageView);
+        TV show = (TV)intent.getSerializableExtra("show");
+        releaseDateTV.setText(show.airDate);
+        ratingTV.setText(show.avgVote+"");
+        genresTV.setText(show.genres+"");
+        overviewTV.setText(show.overview);
+        Picasso.get().load("https://image.tmdb.org/t/p/w500"+show.posterPath).resize(400,550).centerCrop().into(posterImageView);
+        Picasso.get().load("https://image.tmdb.org/t/p/w500"+show.backdropPath).resize(600,500).centerCrop().into(backdropImageView);
 
 
         retrofit = ApiClient.getRetrofit();
-        service = ApiClient.getService();
-        similarAdapter = new Adapter(similarMovies,null,this,1,"movie");
+        service = ApiClient.getTVservice();
+        similarAdapter = new Adapter(null,similarShows,this,1,"TV");
 //        trailerAdapter = new Adapter(recommendationsMovies,this,1);
-        recommendationsAdapter = new Adapter(recommendationsMovies,null,this,1,"movie");
+        recommendationsAdapter = new Adapter(null,recommendationsShows,this,1,"TV");
         castAdapter = new CastAdapter(casts,this);
 
 //        trailersRV.setAdapter(trailerAdapter);
@@ -93,14 +92,14 @@ public class MovieDetails extends AppCompatActivity {
         recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
 
-        Call<MovieCategory> call = service.getSimilarMovies(movie.id,API_KEY);
-        call.enqueue(new Callback<MovieCategory>() {
+        Call<TVCategory> call = service.getSimilarTVShows(show.id,API_KEY);
+        call.enqueue(new Callback<TVCategory>() {
             @Override
-            public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
+            public void onResponse(Call<TVCategory> call, Response<TVCategory> response) {
                 if(response.body()!=null) {
-                    MovieCategory movieCategory = response.body();
-                    similarMovies.clear();
-                    similarMovies.addAll(movieCategory.movies);
+                    TVCategory tvCategory = response.body();
+                    similarShows.clear();
+                    similarShows.addAll(tvCategory.shows);
                     similarAdapter.notifyDataSetChanged();
                 }else{
                 }
@@ -108,18 +107,18 @@ public class MovieDetails extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MovieCategory> call, Throwable t) {
+            public void onFailure(Call<TVCategory> call, Throwable t) {
             }
         });
 
-        Call<MovieCategory> call2 = service.getRecommendations(movie.id,API_KEY);
-        call2.enqueue(new Callback<MovieCategory>() {
+        Call<TVCategory> call2 = service.getRecommendations(show.id,API_KEY);
+        call2.enqueue(new Callback<TVCategory>() {
             @Override
-            public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
+            public void onResponse(Call<TVCategory> call, Response<TVCategory> response) {
                 if(response.body()!=null) {
-                    MovieCategory movieCategory = response.body();
-                    recommendationsMovies.clear();
-                    recommendationsMovies.addAll(movieCategory.movies);
+                    TVCategory tvCategory = response.body();
+                    recommendationsShows.clear();
+                    recommendationsShows.addAll(tvCategory.shows);
                     recommendationsAdapter.notifyDataSetChanged();
                 }else{
                 }
@@ -127,11 +126,11 @@ public class MovieDetails extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MovieCategory> call, Throwable t) {
+            public void onFailure(Call<TVCategory> call, Throwable t) {
             }
         });
 
-        Call<CastCrew> call3 = service.getCast(movie.id,API_KEY);
+        Call<CastCrew> call3 = service.getCast(show.id,API_KEY);
         call3.enqueue(new Callback<CastCrew>() {
             @Override
             public void onResponse(Call<CastCrew> call, Response<CastCrew> response) {

@@ -31,6 +31,18 @@
 
 
         </activity>
+        <activity
+            android:name=".TVDetails"
+            android:label="@string/title_activity_tvdetails"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".CastDetails"
+            android:label="@string/title_activity_cast_details"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+
+        </activity>
     </application>
 
 </manifest>

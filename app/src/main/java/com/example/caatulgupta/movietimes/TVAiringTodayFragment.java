@@ -1,13 +1,16 @@
 package com.example.caatulgupta.movietimes;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,12 +27,19 @@ public class TVAiringTodayFragment extends Fragment {
     RecyclerView airingTodayRecyclerView;
     Retrofit retrofit;
     TVTimesService service;
-    TVAdapter adapter;
+    Adapter adapter;
     ArrayList<TV> shows = new ArrayList<>();
+    ProgressBar progressBar;
+    CardView cardView;
+    onTVAiringTodayListener listener;
 
     public TVAiringTodayFragment() {
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,8 +48,10 @@ public class TVAiringTodayFragment extends Fragment {
         airingTodayRecyclerView = output.findViewById(R.id.airingTodayRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getTVservice();
-        adapter = new TVAdapter(shows,getContext());
+        adapter = new Adapter(null,shows,getContext(),0,"TV");
         airingTodayRecyclerView.setAdapter(adapter);
+        progressBar = output.findViewById(R.id.progressBar);
+        cardView = output.findViewById(R.id.cardView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         airingTodayRecyclerView.setLayoutManager(layoutManager);
@@ -49,6 +61,8 @@ public class TVAiringTodayFragment extends Fragment {
             @Override
             public void onResponse(Call<TVCategory> call, Response<TVCategory> response) {
                 if(response.body()!=null) {
+//                    progressBar.setVisibility(View.GONE);
+//                    cardView.setVisibility(View.VISIBLE);
                     TVCategory tvCategory = response.body();
                     shows.clear();
                     shows.addAll(tvCategory.shows);
@@ -64,6 +78,19 @@ public class TVAiringTodayFragment extends Fragment {
             }
         });
         return output;
+
+//        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){
+//            TV show = shows.get(i);
+//            if(listener!=null){
+//                listener.onTVAiringTodaySelected(show);
+//            }
+//        }
+    }
+
+    public interface onTVAiringTodayListener{
+
+        void onTVAiringTodaySelected(TV show);
+
     }
 
 }

@@ -29,7 +29,7 @@ public class TVTopRatedFragment extends Fragment {
     RecyclerView topRatedRecyclerView;
     Retrofit retrofit;
     TVTimesService service;
-    TVAdapter adapter;
+    Adapter adapter;
     ArrayList<TV> shows = new ArrayList<>();
 
     public TVTopRatedFragment() {
@@ -43,7 +43,7 @@ public class TVTopRatedFragment extends Fragment {
         topRatedRecyclerView = output.findViewById(R.id.topRatedRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getTVservice();
-        adapter = new TVAdapter(shows,getContext());
+        adapter = new Adapter(null,shows,getContext(),0,"TV");
         topRatedRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

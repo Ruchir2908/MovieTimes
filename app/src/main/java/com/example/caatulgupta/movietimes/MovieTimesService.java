@@ -23,6 +23,6 @@ public interface MovieTimesService {
     Call<CastCrew> getCast(@Path("movieId")int id, @Query("api_key")String key);
 
     @GET("person/{pid}/movie_credits")
-    Call<CastCrew> getCastsMovie(@Path("pid")int id, @Query("api_key")String key);
+    Call<MovieCredits> getCastsMovie(@Path("pid")int id, @Query("api_key")String key);
 
 }

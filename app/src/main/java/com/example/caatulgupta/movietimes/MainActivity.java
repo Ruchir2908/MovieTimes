@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -109,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 2;
         }
 
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position){
                 case 0:
+//                    tvNavigation.inflateMenu(R.menu.movie_navigation);
 
 
                     BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                             android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+                            findViewById(R.id.tvNavigation).setVisibility(View.GONE);
                             switch (item.getItemId()) {
                                 case R.id.nowShowing:
                                     MovieNowShowingFragment movieNowShowingFragment = new MovieNowShowingFragment();
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     movieNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
                     findViewById(R.id.movieNavigation).setVisibility(View.VISIBLE);
-//                    findViewById(R.id.tvNavigation).setVisibility(View.INVISIBLE);
+//                    findViewById(R.id.tvNavigation).setVisibility(View.GONE);
                     return new MoviesFragment();
                 case 1:
 
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                             android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+                            findViewById(R.id.movieNavigation).setVisibility(View.GONE);
                             switch (item.getItemId()) {
                                 case R.id.airingToday:
                                     TVAiringTodayFragment tvAiringTodayFragment = new TVAiringTodayFragment();
@@ -187,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
                     findViewById(R.id.tvNavigation).setVisibility(View.VISIBLE);
-//                    findViewById(R.id.movieNavigation).setVisibility(View.INVISIBLE);
+//                    findViewById(R.id.movieNavigation).setVisibility(View.GONE);
                     return new TVShowsFragment();
             }
             return null;

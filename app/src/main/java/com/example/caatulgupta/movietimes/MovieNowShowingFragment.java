@@ -25,7 +25,7 @@ public class MovieNowShowingFragment extends Fragment {
     RecyclerView nowShowingRecyclerView;
     Retrofit retrofit;
     MovieTimesService service;
-    MovieAdapter adapter;
+    Adapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
     NowShowingFragmentCallBack listener;
 
@@ -47,7 +47,7 @@ public class MovieNowShowingFragment extends Fragment {
         nowShowingRecyclerView = output.findViewById(R.id.nowShowingRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getService();
-        adapter = new MovieAdapter(movies,getContext(),0);
+        adapter = new Adapter(movies,null,getContext(),0,"movie");
         nowShowingRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -72,6 +72,8 @@ public class MovieNowShowingFragment extends Fragment {
             public void onFailure(Call<MovieCategory> call, Throwable t) {
             }
         });
+
+
 
 //        @Override
 //        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){

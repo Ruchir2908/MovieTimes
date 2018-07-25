@@ -29,7 +29,7 @@ public class TVOnAirFragment extends Fragment {
     RecyclerView onAirRecyclerView;
     Retrofit retrofit;
     TVTimesService service;
-    TVAdapter adapter;
+    Adapter adapter;
     ArrayList<TV> shows = new ArrayList<>();
 
     public TVOnAirFragment() {
@@ -43,7 +43,7 @@ public class TVOnAirFragment extends Fragment {
         onAirRecyclerView = output.findViewById(R.id.onAirRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getTVservice();
-        adapter = new TVAdapter(shows,getContext());
+        adapter = new Adapter(null,shows,getContext(),0,"TV");
         onAirRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

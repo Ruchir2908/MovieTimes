@@ -24,7 +24,7 @@ public class MoviePopularFragment extends Fragment {
     RecyclerView popularRecyclerView;
     Retrofit retrofit;
     MovieTimesService service;
-    MovieAdapter adapter;
+    Adapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
 
     public MoviePopularFragment() {
@@ -38,7 +38,7 @@ public class MoviePopularFragment extends Fragment {
         popularRecyclerView = output.findViewById(R.id.popularRecyclerView);
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getService();
-        adapter = new MovieAdapter(movies,getContext(),0);
+        adapter = new Adapter(movies,null,getContext(),0,"movie");
         popularRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());

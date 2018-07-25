@@ -1,6 +1,7 @@
 package com.example.caatulgupta.movietimes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,11 +32,22 @@ public class CastAdapter extends RecyclerView.Adapter<CastViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CastViewHolder holder, final int position) {
         Cast cast = casts.get(position);
         holder.name.setText(cast.name);
-        holder.charName.setText(cast.characterName);
+        holder.charName.setText(cast.character);
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+cast.profilePath).resize(360,200).centerCrop().into(holder.profile);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,CastDetails.class);
+                intent.putExtra("cast",casts.get(position));
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override

@@ -20,6 +20,6 @@ public interface TVTimesService {
     Call<CastCrew> getCast(@Path("tvId")int id,@Query("api_key")String key);
 
     @GET("person/{pid}/tv_credits")
-    Call<CastCrew> getCastsTVShows(@Path("pid")int id, @Query("api_key")String key);
+    Call<TVCredits> getCastsTVShows(@Path("pid")int id, @Query("api_key")String key);
 
 }

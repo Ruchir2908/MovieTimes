@@ -1,27 +1,28 @@
+
 package com.example.caatulgupta.movietimes;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
-class TV implements Serializable{
+public class TVforCredits {
 
+    int id;
     String name;
     @SerializedName("genre_ids")
-    ArrayList<Integer> genres;
-    float popularity;
-    @SerializedName("vote_count")
-    int voteCount;
-    @SerializedName("first_air_date")
-    String airDate;
-    @SerializedName("backdrop_path")
-    String backdropPath;
-    int id;
-    @SerializedName("vote_average")
-    float avgVote;
+    List<Integer> genreIds;
     @SerializedName("poster_path")
     String posterPath;
+    @SerializedName("vote_count")
+    int voteCount;
+    @SerializedName("vote_average")
+    float avgVote;
+    @SerializedName("episode_count")
+    int episodeCount;
+    @SerializedName("first_air_date")
+    String firstAirDate;
+    @SerializedName("backdrop_path")
+    String backdropPath;
     String overview;
 
 }
