@@ -2,6 +2,7 @@ package com.example.caatulgupta.movietimes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -69,6 +70,8 @@ public class TVDetails extends AppCompatActivity {
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+show.posterPath).resize(400,550).centerCrop().into(posterImageView);
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+show.backdropPath).resize(600,500).centerCrop().into(backdropImageView);
 
+        CollapsingToolbarLayout layout = findViewById(R.id.toolbar_layout);
+        layout.setTitle(show.name);
 
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getTVservice();
@@ -79,17 +82,17 @@ public class TVDetails extends AppCompatActivity {
 
 //        trailersRV.setAdapter(trailerAdapter);
         castRV.setAdapter(castAdapter);
-        recommendationsRV.setAdapter(recommendationsAdapter);
+//        recommendationsRV.setAdapter(recommendationsAdapter);
         similarRV.setAdapter(similarAdapter);
 
 //        LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager castLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+//        LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager similarLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
 //        trailersRV.setLayoutManager(trailersLayoutManager);
         castRV.setLayoutManager(castLayoutManager);
-        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
+//        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
 
         Call<TVCategory> call = service.getSimilarTVShows(show.id,API_KEY);

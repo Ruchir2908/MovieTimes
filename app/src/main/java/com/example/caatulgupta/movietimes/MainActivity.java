@@ -1,5 +1,6 @@
 package com.example.caatulgupta.movietimes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,7 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
+
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MovieNowShowingFragment.NowShowingFragmentCallBack {
 
@@ -24,23 +28,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     BottomNavigationView movieNavigation, tvNavigation;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        movieNavigation = (BottomNavigationView)findViewById(R.id.movieNavigation);
-
-
-        tvNavigation = (BottomNavigationView)findViewById(R.id.tvNavigation);
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager)findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -70,7 +68,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem menuItem = menu.findItem(R.id.search);
+//        searchView = (SearchView)menuItem.getActionView();
+
+//        searchView.setQueryHint("Movie, TV Shows");
+//        searchView.setSubmitButtonEnabled(true);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                if(!s.isEmpty()){
+//                    updateResults(s);
+//                }
+//                return false;
+//            }
+//        });
         return true;
+    }
+
+    private void updateResults(String s) {
+
+//        Call<SearchResponse> call =
+
     }
 
     @Override
@@ -93,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.watched) {
 
-        }else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
 
         }
 
@@ -117,80 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position){
                 case 0:
-//                    tvNavigation.inflateMenu(R.menu.movie_navigation);
-
-
-                    BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-                        @Override
-                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
-                            findViewById(R.id.tvNavigation).setVisibility(View.GONE);
-                            switch (item.getItemId()) {
-                                case R.id.nowShowing:
-                                    MovieNowShowingFragment movieNowShowingFragment = new MovieNowShowingFragment();
-                                    transaction.replace(R.id.movieCategoryContainer, movieNowShowingFragment);
-                                    break;
-                                case R.id.upcoming:
-                                    MovieUpcomingFragment movieUpcomingFragment = new MovieUpcomingFragment();
-                                    transaction.replace(R.id.movieCategoryContainer, movieUpcomingFragment);
-                                    break;
-                                case R.id.popular:
-                                    MoviePopularFragment moviePopularFragment = new MoviePopularFragment();
-                                    transaction.replace(R.id.movieCategoryContainer, moviePopularFragment);
-                                    break;
-                                case R.id.topRated:
-                                    MovieTopRatedFragment movieTopRatedFragment = new MovieTopRatedFragment();
-                                    transaction.replace(R.id.movieCategoryContainer, movieTopRatedFragment);
-                                    break;
-                            }
-                            transaction.commit();
-                            return true;
-                        }
-                    };
-                    movieNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-                    findViewById(R.id.movieNavigation).setVisibility(View.VISIBLE);
-//                    findViewById(R.id.tvNavigation).setVisibility(View.GONE);
                     return new MoviesFragment();
                 case 1:
-
-
-                    BottomNavigationView.OnNavigationItemSelectedListener tvOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-                        @Override
-                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-                            android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
-                            findViewById(R.id.movieNavigation).setVisibility(View.GONE);
-                            switch (item.getItemId()) {
-                                case R.id.airingToday:
-                                    TVAiringTodayFragment tvAiringTodayFragment = new TVAiringTodayFragment();
-                                    transaction.replace(R.id.tvCategoryContainer, tvAiringTodayFragment);
-                                    break;
-                                case R.id.onAir:
-                                    TVOnAirFragment tvOnAirFragment = new TVOnAirFragment();
-                                    transaction.replace(R.id.tvCategoryContainer, tvOnAirFragment);
-                                    break;
-                                case R.id.tvPopular:
-                                    TVPopularFragment tvPopularFragment = new TVPopularFragment();
-                                    transaction.replace(R.id.tvCategoryContainer, tvPopularFragment);
-                                    break;
-                                case R.id.tvTopRated:
-                                    TVTopRatedFragment tvTopRatedFragment = new TVTopRatedFragment();
-                                    transaction.replace(R.id.tvCategoryContainer, tvTopRatedFragment);
-                                    break;
-                            }
-                            transaction.commit();
-                            return true;
-                        }
-                    };
-                    tvNavigation.setOnNavigationItemSelectedListener(tvOnNavigationItemSelectedListener);
-
-
-                    findViewById(R.id.tvNavigation).setVisibility(View.VISIBLE);
-//                    findViewById(R.id.movieNavigation).setVisibility(View.GONE);
                     return new TVShowsFragment();
             }
             return null;

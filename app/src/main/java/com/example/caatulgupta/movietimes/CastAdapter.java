@@ -36,7 +36,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastViewHolder> {
         Cast cast = casts.get(position);
         holder.name.setText(cast.name);
         holder.charName.setText(cast.character);
-        Picasso.get().load("https://image.tmdb.org/t/p/w500"+cast.profilePath).resize(360,200).centerCrop().into(holder.profile);
+        Picasso.get().load("https://image.tmdb.org/t/p/w500"+cast.profilePath).resize(250,250).centerCrop().into(holder.profile);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

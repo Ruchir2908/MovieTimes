@@ -2,10 +2,12 @@ package com.example.caatulgupta.movietimes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +60,6 @@ public class MovieDetails extends AppCompatActivity {
 
         findById();
 
-
-
         Intent intent = getIntent();
         Movie movie = (Movie)intent.getSerializableExtra("movie");
         releaseDateTV.setText(movie.releaseDate);
@@ -71,6 +71,9 @@ public class MovieDetails extends AppCompatActivity {
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.backdropPath).resize(600,500).centerCrop().into(backdropImageView);
 
 
+        CollapsingToolbarLayout layout =findViewById(R.id.toolbar_layout);
+        layout.setTitle(movie.title);
+
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getService();
         similarAdapter = new Adapter(similarMovies,null,this,1,"movie");
@@ -80,7 +83,7 @@ public class MovieDetails extends AppCompatActivity {
 
 //        trailersRV.setAdapter(trailerAdapter);
         castRV.setAdapter(castAdapter);
-        recommendationsRV.setAdapter(recommendationsAdapter);
+//        recommendationsRV.setAdapter(recommendationsAdapter);
         similarRV.setAdapter(similarAdapter);
 
 //        LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -90,7 +93,7 @@ public class MovieDetails extends AppCompatActivity {
 
 //        trailersRV.setLayoutManager(trailersLayoutManager);
         castRV.setLayoutManager(castLayoutManager);
-        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
+//        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
 
         Call<MovieCategory> call = service.getSimilarMovies(movie.id,API_KEY);
@@ -112,24 +115,24 @@ public class MovieDetails extends AppCompatActivity {
             }
         });
 
-        Call<MovieCategory> call2 = service.getRecommendations(movie.id,API_KEY);
-        call2.enqueue(new Callback<MovieCategory>() {
-            @Override
-            public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
-                if(response.body()!=null) {
-                    MovieCategory movieCategory = response.body();
-                    recommendationsMovies.clear();
-                    recommendationsMovies.addAll(movieCategory.movies);
-                    recommendationsAdapter.notifyDataSetChanged();
-                }else{
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<MovieCategory> call, Throwable t) {
-            }
-        });
+//        Call<MovieCategory> call2 = service.getRecommendations(movie.id,API_KEY);
+//        call2.enqueue(new Callback<MovieCategory>() {
+//            @Override
+//            public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
+//                if(response.body()!=null) {
+//                    MovieCategory movieCategory = response.body();
+//                    recommendationsMovies.clear();
+//                    recommendationsMovies.addAll(movieCategory.movies);
+//                    recommendationsAdapter.notifyDataSetChanged();
+//                }else{
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MovieCategory> call, Throwable t) {
+//            }
+//        });
 
         Call<CastCrew> call3 = service.getCast(movie.id,API_KEY);
         call3.enqueue(new Callback<CastCrew>() {

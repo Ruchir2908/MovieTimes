@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +58,6 @@ public class CastDetails extends AppCompatActivity {
         CollapsingToolbarLayout toolbarLayout = findViewById(R.id.toolbar_layout);
         Picasso.get().load("https://image.tmdb.org/t/p/w500/"+cast.profilePath).centerCrop().resize(300,300).into(profileImage);
         toolbarLayout.setTitle(cast.name);
-        toolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.colorBlack));
 
 
         retrofit = ApiClient.getRetrofit();

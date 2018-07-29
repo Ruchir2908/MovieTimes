@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 public interface MovieTimesService {
 
     @GET("movie/{category}")
-    Call<MovieCategory> getMovies(@Path("category") String category, @Query("api_key")String key);
+    Call<MovieCategory> getMovies(@Path("category") String category, @Query("api_key")String key, @Query("page")int page);
 
     @GET("movie/{movieId}/similar")
     Call<MovieCategory> getSimilarMovies(@Path("movieId")int movieId,@Query("api_key")String key);
@@ -24,5 +24,8 @@ public interface MovieTimesService {
 
     @GET("person/{pid}/movie_credits")
     Call<MovieCredits> getCastsMovie(@Path("pid")int id, @Query("api_key")String key);
+
+    @GET("multi")
+    Call<SearchResponse> search(@Query("api_key")String key, @Query("query")String query);
 
 }

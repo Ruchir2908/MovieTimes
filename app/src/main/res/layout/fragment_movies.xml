@@ -4,32 +4,33 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-app:layout_behavior="@string/appbar_scrolling_view_behavior"
-tools:context=".MoviesFragment"
-    tools:showIn="@layout/app_bar_main">
+tools:context=".MoviesFragment">
 
     <!--<TextView-->
         <!--android:text="RUCHIR"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent" />-->
-
     <FrameLayout
         android:id="@+id/movieCategoryContainer"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="454dp"
+        app:layout_constraintBottom_toTopOf="@+id/movieNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<android.support.design.widget.BottomNavigationView-->
-        <!--android:id="@+id/movieNavigation"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="54dp"-->
-        <!--android:background="?android:attr/windowBackground"-->
-        <!--android:visibility="gone"-->
-        <!--app:layout_constraintBottom_toBottomOf="@+id/container"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:menu="@menu/movie_navigation" />-->
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/movieNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/colorPrimaryDark"
+        app:itemTextColor="@android:color/white"
+        app:itemIconTint="@android:color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/movie_navigation" />
 
 </android.support.constraint.ConstraintLayout>
