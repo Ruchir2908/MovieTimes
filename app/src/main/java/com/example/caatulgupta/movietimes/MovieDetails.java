@@ -7,13 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -31,11 +29,13 @@ public class MovieDetails extends AppCompatActivity {
 
     Retrofit retrofit;
     MovieTimesService service;
-    Adapter similarAdapter, trailerAdapter, recommendationsAdapter;
+    Adapter similarAdapter, recommendationsAdapter;
+    TrailersAdapter  trailerAdapter;
     CastAdapter castAdapter;
     ArrayList<Movie> similarMovies = new ArrayList<>();
     ArrayList<Movie> recommendationsMovies = new ArrayList<>();
     ArrayList<Cast> casts = new ArrayList<>();
+    ArrayList<Videos> videos = new ArrayList<>();
 
     void findById(){
         releaseDateTV = findViewById(R.id.releaseDateTV);
@@ -77,24 +77,42 @@ public class MovieDetails extends AppCompatActivity {
         retrofit = ApiClient.getRetrofit();
         service = ApiClient.getService();
         similarAdapter = new Adapter(similarMovies,null,this,1,"movie");
-//        trailerAdapter = new Adapter(recommendationsMovies,this,1);
+        trailerAdapter = new TrailersAdapter(videos,this);
         recommendationsAdapter = new Adapter(recommendationsMovies,null,this,1,"movie");
         castAdapter = new CastAdapter(casts,this);
 
-//        trailersRV.setAdapter(trailerAdapter);
+        trailersRV.setAdapter(trailerAdapter);
         castRV.setAdapter(castAdapter);
 //        recommendationsRV.setAdapter(recommendationsAdapter);
         similarRV.setAdapter(similarAdapter);
 
-//        LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager castLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        final LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager similarLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
-//        trailersRV.setLayoutManager(trailersLayoutManager);
+        trailersRV.setLayoutManager(trailersLayoutManager);
         castRV.setLayoutManager(castLayoutManager);
 //        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
+
+        Call<Trailers> callVideos = service.getVideos(movie.id,API_KEY);
+        callVideos.enqueue(new Callback<Trailers>() {
+            @Override
+            public void onResponse(Call<Trailers> call, Response<Trailers> response) {
+                if(response.body()!=null){
+                    Trailers trailers = response.body();
+                    videos.clear();
+                    videos.addAll(trailers.results);
+                    trailerAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Trailers> call, Throwable t) {
+
+            }
+        });
 
         Call<MovieCategory> call = service.getSimilarMovies(movie.id,API_KEY);
         call.enqueue(new Callback<MovieCategory>() {

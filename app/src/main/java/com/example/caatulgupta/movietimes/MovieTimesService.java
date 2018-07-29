@@ -17,7 +17,7 @@ public interface MovieTimesService {
     Call<MovieCategory> getRecommendations(@Path("movieId")int id,@Query("api_key")String key);
 
     @GET("movie/{movieId}/videos")
-    Call<MovieVideos> getVideos(@Path("movieId")int id,@Query("api_key")String key);
+    Call<Trailers> getVideos(@Path("movieId")int id, @Query("api_key")String key);
 
     @GET("movie/{movieId}/credits")
     Call<CastCrew> getCast(@Path("movieId")int id, @Query("api_key")String key);

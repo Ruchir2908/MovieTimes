@@ -25,4 +25,7 @@ public interface TVTimesService {
     @GET("multi")
     Call<SearchResponse> search(@Query("api_key")String key, @Query("query")String query);
 
+    @GET("tv/{tvId}/videos")
+    Call<Trailers> getVideos(@Path("tvId")int id, @Query("api_key")String key);
+
 }
