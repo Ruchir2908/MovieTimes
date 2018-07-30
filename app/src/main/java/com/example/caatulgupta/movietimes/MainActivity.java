@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager mViewPager;
     BottomNavigationView movieNavigation, tvNavigation;
     SearchView searchView;
+    boolean moviesTabSelected = false, TVShowsTabSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
+        MenuItem fav = menu.findItem(R.id.favourite);
+        MenuItem watch = menu.findItem(R.id.watched);
 //        searchView = (SearchView)menuItem.getActionView();
 
 //        searchView.setQueryHint("Movie, TV Shows");
@@ -102,7 +105,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id == R.id.favourite){
+            if(moviesTabSelected){
+                
+            }else if(TVShowsTabSelected){
 
+            }
+        }
+        if(id == R.id.watched){
+            if(moviesTabSelected){
+
+            }else if(TVShowsTabSelected){
+
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -140,8 +156,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position){
                 case 0:
+                    moviesTabSelected = true;
+                    TVShowsTabSelected = false;
                     return new MoviesFragment();
                 case 1:
+                    TVShowsTabSelected = true;
+                    moviesTabSelected = false;
                     return new TVShowsFragment();
             }
             return null;

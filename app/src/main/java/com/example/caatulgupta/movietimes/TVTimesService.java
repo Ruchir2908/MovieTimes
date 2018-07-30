@@ -28,4 +28,7 @@ public interface TVTimesService {
     @GET("tv/{tvId}/videos")
     Call<Trailers> getVideos(@Path("tvId")int id, @Query("api_key")String key);
 
+    @GET("tv/{tvId}/reviews")
+    Call<Reviews> getReviews(@Path("tvId")int id, @Query("api_key")String key);
+
 }

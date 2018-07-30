@@ -15,34 +15,24 @@
             android:name=".MainActivity"
             android:label="Movie Times"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".MovieDetails"
             android:label="@string/title_activity_movie_details"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".TVDetails"
             android:label="@string/title_activity_tvdetails"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CastDetails"
             android:label="@string/title_activity_cast_details"
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

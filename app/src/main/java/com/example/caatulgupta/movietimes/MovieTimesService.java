@@ -31,4 +31,7 @@ public interface MovieTimesService {
     @GET("person/{pid}")
     Call<Person> getPerson(@Path("pid")int pid, @Query("api_key")String key);
 
+    @GET("movie/{movieId}/reviews")
+    Call<Reviews> getReviews(@Path("movieId")int id, @Query("api_key")String key);
+
 }

@@ -1,5 +1,6 @@
 package com.example.caatulgupta.movietimes;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,18 +29,22 @@ import static com.example.caatulgupta.movietimes.MainActivity.API_KEY;
 public class TVDetails extends AppCompatActivity {
 
     TextView releaseDateTV, languageTV, ratingTV, genresTV, overviewTV;
-    RecyclerView trailersRV, castRV, recommendationsRV, similarRV;
+    RecyclerView trailersRV, castRV, recommendationsRV, similarRV, reviewRV;
     ImageView posterImageView, backdropImageView;
+    com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
+    TVshowsDAO tVshowsDAO, watchedTVshowsDAO;
 
     Retrofit retrofit;
     TVTimesService service;
     Adapter similarAdapter, recommendationsAdapter;
     TrailersAdapter  trailerAdapter;
     CastAdapter castAdapter;
+    ReviewsAdapter reviewsAdapter;
     ArrayList<TV> similarShows = new ArrayList<>();
     ArrayList<TV> recommendationsShows = new ArrayList<>();
     ArrayList<Cast> casts = new ArrayList<>();
     ArrayList<Videos> videos = new ArrayList<>();
+    ArrayList<Review> reviews = new ArrayList<>();
 
     void findById(){
         releaseDateTV = findViewById(R.id.releaseDateTV);
@@ -49,9 +55,12 @@ public class TVDetails extends AppCompatActivity {
         trailersRV = findViewById(R.id.trailersRecyclerView);
         castRV = findViewById(R.id.castRecyclerView);
         similarRV = findViewById(R.id.similarRecyclerView);
-        recommendationsRV = findViewById(R.id.recommendationsRecyclerView);
+//        recommendationsRV = findViewById(R.id.recommendationsRecyclerView);
         posterImageView= findViewById(R.id.posterImageView);
         backdropImageView = findViewById(R.id.backdropImageView);
+        reviewRV = findViewById(R.id.reviewRecyclerView);
+        favouriteFAB = findViewById(R.id.favoriteFAB);
+        watchedFAB = findViewById(R.id.watchedFAB);
     }
 
     @Override
@@ -63,8 +72,13 @@ public class TVDetails extends AppCompatActivity {
 
         findById();
 
+        TVDatabase tvDatabase = Room.databaseBuilder(getApplicationContext(),TVDatabase.class,"tvdb").allowMainThreadQueries().build();
+        tVshowsDAO = tvDatabase.getTVshowDAO();
+        TVDatabase watchedTVDatabase = Room.databaseBuilder(getApplicationContext(),TVDatabase.class,"watched_tvdb").allowMainThreadQueries().build();
+        watchedTVshowsDAO = watchedTVDatabase.getTVshowDAO();
+
         Intent intent = getIntent();
-        TV show = (TV)intent.getSerializableExtra("show");
+        final TV show = (TV)intent.getSerializableExtra("show");
         releaseDateTV.setText(show.airDate);
         ratingTV.setText(show.avgVote+"");
         genresTV.setText(show.genres+"");
@@ -86,16 +100,39 @@ public class TVDetails extends AppCompatActivity {
         castRV.setAdapter(castAdapter);
 //        recommendationsRV.setAdapter(recommendationsAdapter);
         similarRV.setAdapter(similarAdapter);
+        reviewsAdapter = new ReviewsAdapter(reviews,this);
+        reviewRV.setAdapter(reviewsAdapter);
+
 
         LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager castLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 //        LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager similarLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager reviewsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
         trailersRV.setLayoutManager(trailersLayoutManager);
         castRV.setLayoutManager(castLayoutManager);
 //        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
+        reviewRV.setLayoutManager(reviewsLayoutManager);
+
+        Call<Reviews> callReviews = service.getReviews(show.id,API_KEY);
+        callReviews.enqueue(new Callback<Reviews>() {
+            @Override
+            public void onResponse(Call<Reviews> call, Response<Reviews> response) {
+                if(response.body()!=null){
+                    Reviews review = response.body();
+                    reviews.clear();
+                    reviews.addAll(review.results);
+                    reviewsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reviews> call, Throwable t) {
+
+            }
+        });
 
         Call<Trailers> callVideos = service.getVideos(show.id,API_KEY);
         callVideos.enqueue(new Callback<Trailers>() {
@@ -172,8 +209,29 @@ public class TVDetails extends AppCompatActivity {
             }
         });
 
+        favouriteFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Integer> ids = tVshowsDAO.getShowIds();
+                if(ids.contains(show.id)){
+                    tVshowsDAO.removeShow(show);
+                }else{
+                    tVshowsDAO.addShow(show);
+                }
+            }
+        });
 
-
+        watchedFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Integer> ids = watchedTVshowsDAO.getShowIds();
+                if(ids.contains(show.id)){
+                    watchedTVshowsDAO.removeShow(show);
+                }else{
+                    watchedTVshowsDAO.addShow(show);
+                }
+            }
+        });
 
     }
 }

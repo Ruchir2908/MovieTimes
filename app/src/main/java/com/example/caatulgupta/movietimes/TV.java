@@ -1,13 +1,19 @@
 package com.example.caatulgupta.movietimes;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-class TV implements Serializable{
+@Entity(tableName = "tvdb")
+public class TV implements Serializable{
 
     String name;
+    @Ignore
     @SerializedName("genre_ids")
     ArrayList<Integer> genres;
     float popularity;
@@ -17,6 +23,7 @@ class TV implements Serializable{
     String airDate;
     @SerializedName("backdrop_path")
     String backdropPath;
+    @PrimaryKey
     int id;
     @SerializedName("vote_average")
     float avgVote;

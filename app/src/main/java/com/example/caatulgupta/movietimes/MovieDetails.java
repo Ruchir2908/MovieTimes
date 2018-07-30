@@ -1,18 +1,22 @@
 package com.example.caatulgupta.movietimes;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,22 +24,27 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.example.caatulgupta.movietimes.MainActivity.API_KEY;
+import static java.lang.System.in;
 
 public class MovieDetails extends AppCompatActivity {
 
     TextView releaseDateTV, languageTV, ratingTV, genresTV, overviewTV;
-    RecyclerView trailersRV, castRV, recommendationsRV, similarRV;
+    RecyclerView trailersRV, castRV, recommendationsRV, similarRV, reviewRV;
     ImageView posterImageView,backdropImageView;
+    com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
+    MoviesDAO moviesDAO, watchedMoviesDAO;
 
     Retrofit retrofit;
     MovieTimesService service;
     Adapter similarAdapter, recommendationsAdapter;
+    ReviewsAdapter reviewsAdapter;
     TrailersAdapter  trailerAdapter;
     CastAdapter castAdapter;
     ArrayList<Movie> similarMovies = new ArrayList<>();
     ArrayList<Movie> recommendationsMovies = new ArrayList<>();
     ArrayList<Cast> casts = new ArrayList<>();
     ArrayList<Videos> videos = new ArrayList<>();
+    ArrayList<Review> reviews = new ArrayList<>();
 
     void findById(){
         releaseDateTV = findViewById(R.id.releaseDateTV);
@@ -46,9 +55,12 @@ public class MovieDetails extends AppCompatActivity {
         trailersRV = findViewById(R.id.trailersRecyclerView);
         castRV = findViewById(R.id.castRecyclerView);
         similarRV = findViewById(R.id.similarRecyclerView);
-        recommendationsRV = findViewById(R.id.recommendationsRecyclerView);
+//        recommendationsRV = findViewById(R.id.recommendationsRecyclerView);
+        reviewRV = findViewById(R.id.reviewRecyclerView);
         posterImageView = findViewById(R.id.posterImageView);
         backdropImageView = findViewById(R.id.backdropImageView);
+        favouriteFAB = findViewById(R.id.favoriteFAB);
+        watchedFAB = findViewById(R.id.watchedFAB);
     }
 
     @Override
@@ -60,8 +72,13 @@ public class MovieDetails extends AppCompatActivity {
 
         findById();
 
+        MovieDatabase movieDatabase = Room.databaseBuilder(getApplicationContext(),MovieDatabase.class,"moviedb").allowMainThreadQueries().build();
+        moviesDAO = movieDatabase.getMovieDAO();
+        MovieDatabase watchedMovieDatabase = Room.databaseBuilder(getApplicationContext(),MovieDatabase.class,"watched_moviedb").allowMainThreadQueries().build();
+        watchedMoviesDAO = watchedMovieDatabase.getMovieDAO();
+
         Intent intent = getIntent();
-        Movie movie = (Movie)intent.getSerializableExtra("movie");
+        final Movie movie = (Movie)intent.getSerializableExtra("movie");
         releaseDateTV.setText(movie.releaseDate);
         languageTV.setText(movie.language);
         ratingTV.setText(movie.avgVote+"");
@@ -69,7 +86,6 @@ public class MovieDetails extends AppCompatActivity {
         overviewTV.setText(movie.overview);
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.posterPath).resize(400,550).centerCrop().into(posterImageView);
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.backdropPath).resize(600,500).centerCrop().into(backdropImageView);
-
 
         CollapsingToolbarLayout layout =findViewById(R.id.toolbar_layout);
         layout.setTitle(movie.title);
@@ -80,21 +96,44 @@ public class MovieDetails extends AppCompatActivity {
         trailerAdapter = new TrailersAdapter(videos,this);
         recommendationsAdapter = new Adapter(recommendationsMovies,null,this,1,"movie");
         castAdapter = new CastAdapter(casts,this);
+        reviewsAdapter = new ReviewsAdapter(reviews,this);
 
         trailersRV.setAdapter(trailerAdapter);
         castRV.setAdapter(castAdapter);
 //        recommendationsRV.setAdapter(recommendationsAdapter);
         similarRV.setAdapter(similarAdapter);
+        reviewRV.setAdapter(reviewsAdapter);
+
 
         LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager castLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         final LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager similarLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager reviewsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
         trailersRV.setLayoutManager(trailersLayoutManager);
         castRV.setLayoutManager(castLayoutManager);
 //        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
+        reviewRV.setLayoutManager(reviewsLayoutManager);
+
+        Call<Reviews> callReviews = service.getReviews(movie.id,API_KEY);
+        callReviews.enqueue(new Callback<Reviews>() {
+            @Override
+            public void onResponse(Call<Reviews> call, Response<Reviews> response) {
+                if(response.body()!=null){
+                    Reviews review = response.body();
+                    reviews.clear();
+                    reviews.addAll(review.results);
+                    reviewsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reviews> call, Throwable t) {
+
+            }
+        });
 
         Call<Trailers> callVideos = service.getVideos(movie.id,API_KEY);
         callVideos.enqueue(new Callback<Trailers>() {
@@ -171,8 +210,29 @@ public class MovieDetails extends AppCompatActivity {
             }
         });
 
+        favouriteFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Integer> ids = moviesDAO.getMovieIds();
+                if(ids.contains(movie.id)){
+                    moviesDAO.removeMovie(movie);
+                }else{
+                    moviesDAO.addMovie(movie);
+                }
+            }
+        });
 
-
+        watchedFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Integer> ids = watchedMoviesDAO.getMovieIds();
+                if(ids.contains(movie.id)){
+                    watchedMoviesDAO.removeMovie(movie);
+                }else{
+                    watchedMoviesDAO.addMovie(movie);
+                }
+            }
+        });
 
     }
 }

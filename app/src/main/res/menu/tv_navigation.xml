@@ -7,17 +7,17 @@
         android:title="Airing Today" />
 
     <item
-        android:icon="@drawable/on_air"
+        android:icon="@drawable/on_air_final_tv_show"
         android:id="@+id/onAir"
         android:title="On Air" />
 
     <item
-        android:icon="@drawable/top_rated_tv"
+        android:icon="@drawable/top_rated"
         android:id="@+id/tvTopRated"
         android:title="Top rated" />
 
     <item
-        android:icon="@drawable/upcoming_tv"
+        android:icon="@drawable/popular_tv_show"
         android:id="@+id/tvPopular"
         android:title="Popular" />
 

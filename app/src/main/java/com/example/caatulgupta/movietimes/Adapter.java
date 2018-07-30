@@ -60,18 +60,18 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
             Movie movie = movies.get(position);
             if(layoutType==0){
                 holder.titleTV.setText(movie.title);
-                Picasso.get().load("https://image.tmdb.org/t/p/w780"+movie.backdropPath).resize(360,200).centerCrop().into(holder.image);
+                Picasso.get().load("https://image.tmdb.org/t/p/w780"+movie.backdropPath).resize(400,230).centerCrop().into(holder.image);
             }else{
-                Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.posterPath).resize(130,200).centerCrop().into(holder.posterImageView);
+                Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.posterPath).resize(160,200).centerCrop().into(holder.posterImageView);
                 holder.nameTV.setText(movie.title);
             }
         }else{
             TV show = shows.get(position);
             if(layoutType==0){
                 holder.titleTV.setText(show.name);
-                Picasso.get().load("https://image.tmdb.org/t/p/w780"+show.backdropPath).resize(360,200).centerCrop().into(holder.image);
+                Picasso.get().load("https://image.tmdb.org/t/p/w780"+show.backdropPath).resize(400,230).centerCrop().into(holder.image);
             }else{
-                Picasso.get().load("https://image.tmdb.org/t/p/w185"+show.posterPath).resize(130,200).centerCrop().into(holder.posterImageView);
+                Picasso.get().load("https://image.tmdb.org/t/p/w185"+show.posterPath).resize(160,200).centerCrop().into(holder.posterImageView);
                 holder.nameTV.setText(show.name);
             }
         }
@@ -145,6 +145,12 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
                 builder.setIcon(R.drawable.overview);
                 builder.setNegativeButtonIcon(context.getDrawable(R.drawable.fav18dp));
                 builder.setPositiveButtonIcon(context.getDrawable(R.drawable.eye18dp));
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+//                        Toast.makeText(context, "HIIII", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 android.support.v7.app.AlertDialog dialog = builder.create();
                 dialog.show();
                 return true;
