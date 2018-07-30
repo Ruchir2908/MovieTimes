@@ -31,6 +31,7 @@ public class CastDetails extends AppCompatActivity {
     Adapter moviesAdapter, showsAdapter;
     RecyclerView CastMoviesRecyclerView, CastTVShowsRecyclerView;
     TextView aboutCastTextView;
+    boolean isCheck = true;
 
     Retrofit retrofit;
     MovieTimesService MovieService;
@@ -53,7 +54,7 @@ public class CastDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         Cast cast = (Cast)intent.getSerializableExtra("cast");
-        aboutCastTextView.setText(cast.biography);
+//        aboutCastTextView.setText(cast.biography);
 
         CollapsingToolbarLayout toolbarLayout = findViewById(R.id.toolbar_layout);
         Picasso.get().load("https://image.tmdb.org/t/p/w500/"+cast.profilePath).centerCrop().resize(300,300).into(profileImage);
@@ -73,6 +74,31 @@ public class CastDetails extends AppCompatActivity {
         CastMoviesRecyclerView.setLayoutManager(movieLayoutManager);
         LinearLayoutManager showLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         CastTVShowsRecyclerView.setLayoutManager(showLayoutManager);
+
+        Call<Person> call3 = MovieService.getPerson(cast.id,API_KEY);
+        call3.enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                aboutCastTextView.setText(response.body().biography);
+                aboutCastTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(isCheck){
+                            aboutCastTextView.setMaxLines(10);
+                            isCheck = false;
+                        }else{
+                            aboutCastTextView.setMaxLines(4);
+                            isCheck = true;
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+
+            }
+        });
 
         Call<MovieCredits> call = MovieService.getCastsMovie(cast.id,API_KEY);
         call.enqueue(new Callback<MovieCredits>() {
@@ -111,7 +137,5 @@ public class CastDetails extends AppCompatActivity {
             public void onFailure(Call<TVCredits> call, Throwable t) {
             }
         });
-
-
     }
 }

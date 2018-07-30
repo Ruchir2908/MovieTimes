@@ -21,6 +21,7 @@ tools:context=".MoviesFragment">
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/movieNavigation"
+
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@color/colorPrimaryDark"

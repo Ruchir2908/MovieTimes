@@ -16,16 +16,20 @@
         <TextView
             android:id="@+id/aboutCastTextView"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="4"
             android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/textView8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
             tools:text="About" />
 
         <android.support.v7.widget.RecyclerView
@@ -36,10 +40,11 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CastMovieRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/CastMovieRecyclerView"
@@ -49,10 +54,68 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="15dp"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:text="About"
+            app:layout_constraintBottom_toTopOf="@+id/aboutCastTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="15dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="Movies"
+            app:layout_constraintBottom_toTopOf="@+id/CastMovieRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/aboutCastTextView" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="15dp"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="TV Shows"
+            app:layout_constraintBottom_toTopOf="@+id/CastTvShowsRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/CastMovieRecyclerView" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v4.widget.NestedScrollView>

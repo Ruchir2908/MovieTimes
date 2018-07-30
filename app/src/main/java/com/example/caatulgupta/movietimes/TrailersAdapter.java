@@ -1,6 +1,8 @@
 package com.example.caatulgupta.movietimes;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,11 +44,20 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-                builder.setTitle(video.name);
-                builder.setView(R.layout.you_tube_player);
-                android.support.v7.app.AlertDialog dialog = builder.create();
-                dialog.show();
+//                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+//                builder.setTitle(video.name);
+//                builder.setView(R.layout.you_tube_player);
+//                android.support.v7.app.AlertDialog dialog = builder.create();
+//                dialog.show();
+
+                Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.key));
+//                Intent webIntent = new Intent(Intent.ACTION_VIEW,
+//                        Uri.parse("http://www.youtube.com/watch?v=" + id));
+//                try {
+                    context.startActivity(appIntent);
+//                } catch (ActivityNotFoundException ex) {
+//                    context.startActivity(webIntent);
+//                }
             }
         });
     }

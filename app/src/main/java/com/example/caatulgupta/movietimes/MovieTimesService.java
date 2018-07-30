@@ -28,4 +28,7 @@ public interface MovieTimesService {
     @GET("multi")
     Call<SearchResponse> search(@Query("api_key")String key, @Query("query")String query);
 
+    @GET("person/{pid}")
+    Call<Person> getPerson(@Path("pid")int pid, @Query("api_key")String key);
+
 }

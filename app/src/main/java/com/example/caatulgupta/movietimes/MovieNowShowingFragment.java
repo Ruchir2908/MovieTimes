@@ -58,6 +58,7 @@ public class MovieNowShowingFragment extends Fragment {
         nowShowingRecyclerView.setAdapter(adapter);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+
         nowShowingRecyclerView.setLayoutManager(layoutManager);
 
         nowShowingRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
