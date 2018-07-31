@@ -3,6 +3,7 @@ package com.example.caatulgupta.movietimes;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
@@ -27,6 +29,8 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
     Context context;
     int layoutType;
     String type;
+    MoviesDAO moviesDAO, watchedMoviesDAO;
+    TVshowsDAO tVshowsDAO, watchedTVshowsDAO;
 
     public Adapter(ArrayList<Movie> movies,ArrayList<TV> shows, Context context, int layoutType, String type) {
         if(type.equals("movie")){
@@ -75,6 +79,17 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
                 holder.nameTV.setText(show.name);
             }
         }
+
+        final MovieDatabase movieDatabase = Room.databaseBuilder(context.getApplicationContext(),MovieDatabase.class,"moviedb").allowMainThreadQueries().build();
+        moviesDAO = movieDatabase.getMovieDAO();
+        MovieDatabase watchedMovieDatabase = Room.databaseBuilder(context.getApplicationContext(),MovieDatabase.class,"watched_moviedb").allowMainThreadQueries().build();
+        watchedMoviesDAO = watchedMovieDatabase.getMovieDAO();
+
+        TVDatabase tvDatabase = Room.databaseBuilder(context.getApplicationContext(),TVDatabase.class,"tvdb").allowMainThreadQueries().build();
+        tVshowsDAO = tvDatabase.getTVshowDAO();
+        TVDatabase watchedTVDatabase = Room.databaseBuilder(context.getApplicationContext(),TVDatabase.class,"watched_tvdb").allowMainThreadQueries().build();
+        watchedTVshowsDAO = watchedTVDatabase.getTVshowDAO();
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,9 +141,23 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(type.equals("movie")){
-                            Toast.makeText(context, "Movie added to favourites", Toast.LENGTH_SHORT).show();
+                            List<Integer> ids = moviesDAO.getMovieIds();
+                            if(ids.contains(movies.get(position).id)){
+                                moviesDAO.removeMovie(movies.get(position));
+                                Toast.makeText(context, "Favourite removed", Toast.LENGTH_SHORT).show();
+                            }else{
+                                moviesDAO.addMovie(movies.get(position));
+                                Toast.makeText(context, "Favourite added", Toast.LENGTH_SHORT).show();
+                            }
                         }else{
-                            Toast.makeText(context, "Show added to favourites", Toast.LENGTH_SHORT).show();
+                            List<Integer> ids = tVshowsDAO.getShowIds();
+                            if(ids.contains(shows.get(position).id)){
+                                tVshowsDAO.removeShow(shows.get(position));
+                                Toast.makeText(context, "Favourite removed", Toast.LENGTH_SHORT).show();
+                            }else{
+                                tVshowsDAO.addShow(shows.get(position));
+                                Toast.makeText(context, "Favourite added", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -136,9 +165,23 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(type.equals("movie")){
-                            Toast.makeText(context, "Movie added to watched list", Toast.LENGTH_SHORT).show();
+                            List<Integer> ids = watchedMoviesDAO.getMovieIds();
+                            if(ids.contains(movies.get(position).id)){
+                                watchedMoviesDAO.removeMovie(movies.get(position));
+                                Toast.makeText(context, "Removed from watched", Toast.LENGTH_SHORT).show();
+                            }else{
+                                watchedMoviesDAO.addMovie(movies.get(position));
+                                Toast.makeText(context, "Added to watched", Toast.LENGTH_SHORT).show();
+                            }
                         }else {
-                            Toast.makeText(context, "Show added to watched list", Toast.LENGTH_SHORT).show();
+                            List<Integer> ids = watchedTVshowsDAO.getShowIds();
+                            if(ids.contains(shows.get(position).id)){
+                                watchedTVshowsDAO.removeShow(shows.get(position));
+                                Toast.makeText(context, "Removed from watched", Toast.LENGTH_SHORT).show();
+                            }else{
+                                watchedTVshowsDAO.addShow(shows.get(position));
+                                Toast.makeText(context, "Added to watched", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

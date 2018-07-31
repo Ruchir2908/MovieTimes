@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -215,8 +216,10 @@ public class TVDetails extends AppCompatActivity {
                 List<Integer> ids = tVshowsDAO.getShowIds();
                 if(ids.contains(show.id)){
                     tVshowsDAO.removeShow(show);
+                    Toast.makeText(TVDetails.this, "Favourite removed", Toast.LENGTH_SHORT).show();
                 }else{
                     tVshowsDAO.addShow(show);
+                    Toast.makeText(TVDetails.this, "Favourite added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -227,8 +230,10 @@ public class TVDetails extends AppCompatActivity {
                 List<Integer> ids = watchedTVshowsDAO.getShowIds();
                 if(ids.contains(show.id)){
                     watchedTVshowsDAO.removeShow(show);
+                    Toast.makeText(TVDetails.this, "Removed from watched", Toast.LENGTH_SHORT).show();
                 }else{
                     watchedTVshowsDAO.addShow(show);
+                    Toast.makeText(TVDetails.this, "Added to watched", Toast.LENGTH_SHORT).show();
                 }
             }
         });

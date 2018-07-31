@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -80,8 +81,12 @@ public class MovieDetails extends AppCompatActivity {
         Intent intent = getIntent();
         final Movie movie = (Movie)intent.getSerializableExtra("movie");
         releaseDateTV.setText(movie.releaseDate);
-        languageTV.setText(movie.language);
-        ratingTV.setText(movie.avgVote+"");
+        if(movie.language.equals("en")){
+            languageTV.setText("Eng");
+        }else if(movie.language.equals("hi")){
+            languageTV.setText("Hin");
+        }
+        ratingTV.setText(movie.avgVote+" ★");
         genresTV.setText(movie.genreIds+"");
         overviewTV.setText(movie.overview);
         Picasso.get().load("https://image.tmdb.org/t/p/w500"+movie.posterPath).resize(400,550).centerCrop().into(posterImageView);
@@ -216,8 +221,10 @@ public class MovieDetails extends AppCompatActivity {
                 List<Integer> ids = moviesDAO.getMovieIds();
                 if(ids.contains(movie.id)){
                     moviesDAO.removeMovie(movie);
+                    Toast.makeText(MovieDetails.this, "Favourite removed", Toast.LENGTH_SHORT).show();
                 }else{
                     moviesDAO.addMovie(movie);
+                    Toast.makeText(MovieDetails.this, "Favourite added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -228,8 +235,10 @@ public class MovieDetails extends AppCompatActivity {
                 List<Integer> ids = watchedMoviesDAO.getMovieIds();
                 if(ids.contains(movie.id)){
                     watchedMoviesDAO.removeMovie(movie);
+                    Toast.makeText(MovieDetails.this, "Removed from watched", Toast.LENGTH_SHORT).show();
                 }else{
                     watchedMoviesDAO.addMovie(movie);
+                    Toast.makeText(MovieDetails.this, "Added to watched", Toast.LENGTH_SHORT).show();
                 }
             }
         });

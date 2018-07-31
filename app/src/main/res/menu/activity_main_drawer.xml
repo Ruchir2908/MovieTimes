@@ -16,6 +16,11 @@
             android:id="@+id/watched"
             android:icon="@drawable/watch"
             android:title="Watched" />
+
+        <item
+            android:id="@+id/recommendations"
+            android:icon="@drawable/popular"
+            android:title="Recommendations"/>
     </group>
 
     <item android:title="Communicate">

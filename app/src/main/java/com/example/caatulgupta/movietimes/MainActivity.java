@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomNavigationView movieNavigation, tvNavigation;
     SearchView searchView;
     boolean moviesTabSelected = false, TVShowsTabSelected = false;
+    boolean homeSelected = true, favouriteSelected = false, watchedSelected = false, recommendationsSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,13 +128,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.home) {
-
+            homeSelected = true;
+            favouriteSelected = false;
+            watchedSelected = false;
+            recommendationsSelected = false;
         } else if (id == R.id.favourite) {
-
+            homeSelected = false;
+            favouriteSelected = true;
+            watchedSelected = false;
+            recommendationsSelected = false;
         } else if (id == R.id.watched) {
-
-        } else if (id == R.id.nav_share) {
-
+            homeSelected = false;
+            favouriteSelected = false;
+            watchedSelected = true;
+            recommendationsSelected = false;
+        } else if (id == R.id.recommendations) {
+            homeSelected = false;
+            favouriteSelected = false;
+            watchedSelected = false;
+            recommendationsSelected = true;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -158,11 +171,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case 0:
                     moviesTabSelected = true;
                     TVShowsTabSelected = false;
+                    if(favouriteSelected) return new FavouriteMovies();
+//                    else if(watchedSelected) return new WatchedMovies();
+//                    else if(recommendationsSelected) return new RecommendationMovies();
                     return new MoviesFragment();
                 case 1:
                     TVShowsTabSelected = true;
                     moviesTabSelected = false;
-                    return new TVShowsFragment();
+//                    else if(favouriteSelected) return new FavouriteShows();
+//                    else if(watchedSelected) return new WatchedShows();
+//                    else if(recommendationsSelected) return new RecommendationShows();
+                        return new TVShowsFragment();
             }
             return null;
         }
