@@ -38,7 +38,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersViewHolder> {
         if(!video.type.equals("Trailer")){
             return;
         }
-        Picasso.get().load("http://img.youtube.com/vi/"+video.key+"/hqdefault.jpg").resize(311,311).centerCrop().into(holder.thumbnail);
+        Picasso.get().load("http://img.youtube.com/vi/"+video.key+"/hqdefault.jpg").resize(550,400).centerCrop().into(holder.thumbnail);
         holder.textView.setText(video.name);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -34,6 +34,7 @@ public class MovieDetails extends AppCompatActivity {
     ImageView posterImageView,backdropImageView;
     com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
     MoviesDAO moviesDAO, watchedMoviesDAO;
+    String genreList;
 
     Retrofit retrofit;
     MovieTimesService service;
@@ -46,6 +47,7 @@ public class MovieDetails extends AppCompatActivity {
     ArrayList<Cast> casts = new ArrayList<>();
     ArrayList<Videos> videos = new ArrayList<>();
     ArrayList<Review> reviews = new ArrayList<>();
+    ArrayList<Genres> genres = new ArrayList<>();
 
     void findById(){
         releaseDateTV = findViewById(R.id.releaseDateTV);
@@ -121,6 +123,34 @@ public class MovieDetails extends AppCompatActivity {
 //        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
         reviewRV.setLayoutManager(reviewsLayoutManager);
+
+        Call<GenreObject> callGenres = service.getMovieGenres(API_KEY);
+        callGenres.enqueue(new Callback<GenreObject>() {
+            @Override
+            public void onResponse(Call<GenreObject> call, Response<GenreObject> response) {
+                if(response.body()!=null){
+//                    ArrayList<Genres> genre = new ArrayList<>();
+//                    genre.addAll(response.body());
+                    genres.clear();
+                    genres.addAll(response.body().genres);
+                    genreList = "";
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenreObject> call, Throwable t) {
+
+            }
+        });
+
+        for(int i=0;i<genres.size();i++){
+            if(genres.contains(movie.genreIds.get(i))){
+                genreList.concat(genres.get(i).name+",");
+            }
+
+        }
+
+        genresTV.setText(genreList);
 
         Call<Reviews> callReviews = service.getReviews(movie.id,API_KEY);
         callReviews.enqueue(new Callback<Reviews>() {

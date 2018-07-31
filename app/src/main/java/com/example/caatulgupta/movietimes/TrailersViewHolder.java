@@ -14,6 +14,8 @@ class TrailersViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         thumbnail = itemView.findViewById(R.id.image);
         textView = itemView.findViewById(R.id.titleTV);
+
+
     }
 
 

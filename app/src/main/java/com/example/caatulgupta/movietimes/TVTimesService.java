@@ -1,5 +1,7 @@
 package com.example.caatulgupta.movietimes;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -30,5 +32,8 @@ public interface TVTimesService {
 
     @GET("tv/{tvId}/reviews")
     Call<Reviews> getReviews(@Path("tvId")int id, @Query("api_key")String key);
+
+    @GET("genre/tv/list")
+    Call<ArrayList<Genres>> getTVGenres(@Query("api_key")String key);
 
 }
