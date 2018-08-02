@@ -319,8 +319,7 @@
         android:layout_alignParentRight="true"
         fab:fab_addButtonColorNormal="@color/colorPrimary"
         fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
-        fab:fab_addButtonSize="mini"
-        fab:fab_labelsPosition="left">
+        fab:fab_addButtonSize="mini">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/favoriteFAB"
