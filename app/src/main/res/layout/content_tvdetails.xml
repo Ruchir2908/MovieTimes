@@ -286,14 +286,14 @@
             android:id="@+id/favoriteFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_icon="@drawable/fav"
+            app:fab_icon="@drawable/favorite_border_white_18dp"
             fab:fab_colorNormal="@color/colorPrimary" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/watchedFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fab_icon="@drawable/watch"
+            app:fab_icon="@drawable/eye_white_18dp"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_size="mini" />
 

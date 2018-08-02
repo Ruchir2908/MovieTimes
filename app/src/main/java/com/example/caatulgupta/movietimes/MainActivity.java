@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -26,11 +27,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static String API_KEY = "98247b6d9263ea7606524c339461f256";
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
+    private ViewPager homeViewPager, favViewPager, watchViewPager, recommendationViewPager;
     BottomNavigationView movieNavigation, tvNavigation;
     SearchView searchView;
     boolean moviesTabSelected = false, TVShowsTabSelected = false;
     boolean homeSelected = true, favouriteSelected = false, watchedSelected = false, recommendationsSelected = false;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +42,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager)findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        homeViewPager = (ViewPager)findViewById(R.id.container_home);
+        homeViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        favViewPager = findViewById(R.id.container_fav);
+        favViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                if(position == 0){
+                    return new FavouriteMovies();
+                }else if(position == 1){
+                    return new FavouriteShows();
+                }
+                return null;
+            }
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        });
+
+        watchViewPager = findViewById(R.id.container_watched);
+        watchViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                if(position == 0){
+                    return new WatchedMovies();
+                }else if(position == 1){
+                    return new WatchedShows();
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        });
+
+        recommendationViewPager = findViewById(R.id.container_recommendations);
+        recommendationViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                if(position == 0){
+                    return new RecommendedMovies();
+                }else if(position == 1){
+                    return new RecommendedShows();
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        });
+
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        homeViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(homeViewPager));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -123,30 +180,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.home) {
+            Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
             homeSelected = true;
             favouriteSelected = false;
             watchedSelected = false;
             recommendationsSelected = false;
+
+            homeViewPager.setVisibility(View.VISIBLE);
+            favViewPager.setVisibility(View.GONE);
+            watchViewPager.setVisibility(View.GONE);
+            recommendationViewPager.setVisibility(View.GONE);
         } else if (id == R.id.favourite) {
+            Toast.makeText(this, "Favourite", Toast.LENGTH_SHORT).show();
             homeSelected = false;
             favouriteSelected = true;
             watchedSelected = false;
             recommendationsSelected = false;
+
+            homeViewPager.setVisibility(View.GONE);
+            favViewPager.setVisibility(View.VISIBLE);
+            watchViewPager.setVisibility(View.GONE);
+            recommendationViewPager.setVisibility(View.GONE);
+
+            favViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(favViewPager));
+
+
         } else if (id == R.id.watched) {
+            Toast.makeText(this, "Watched", Toast.LENGTH_SHORT).show();
             homeSelected = false;
             favouriteSelected = false;
             watchedSelected = true;
             recommendationsSelected = false;
+
+            homeViewPager.setVisibility(View.GONE);
+            favViewPager.setVisibility(View.GONE);
+            watchViewPager.setVisibility(View.VISIBLE);
+            recommendationViewPager.setVisibility(View.GONE);
+
+            watchViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(watchViewPager));
+
         } else if (id == R.id.recommendations) {
+            Toast.makeText(this, "Recommendations", Toast.LENGTH_SHORT).show();
             homeSelected = false;
             favouriteSelected = false;
             watchedSelected = false;
             recommendationsSelected = true;
+
+            homeViewPager.setVisibility(View.GONE);
+            favViewPager.setVisibility(View.GONE);
+            watchViewPager.setVisibility(View.GONE);
+            recommendationViewPager.setVisibility(View.VISIBLE);
+
+            recommendationViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(recommendationViewPager));
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -171,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case 0:
                     moviesTabSelected = true;
                     TVShowsTabSelected = false;
-                    if(favouriteSelected) return new FavouriteMovies();
+//                    if(favouriteSelected) return new FavouriteMovies();
 //                    else if(watchedSelected) return new WatchedMovies();
 //                    else if(recommendationsSelected) return new RecommendationMovies();
                     return new MoviesFragment();
@@ -185,6 +278,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             return null;
         }
+
+
+
     }
 
     @Override

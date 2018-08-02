@@ -4,12 +4,18 @@ package com.example.caatulgupta.movietimes;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.lang.reflect.Field;
+
 public class MoviesFragment extends Fragment {
 
     BottomNavigationView bottomNavigationView;
@@ -58,6 +64,7 @@ public class MoviesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bottomNavigationView = view.findViewById(R.id.movieNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //bottomNavigationView.removeShiftMode(bottomNavigationView);
 
     }
 
@@ -67,5 +74,27 @@ public class MoviesFragment extends Fragment {
         bottomNavigationView = output.findViewById(R.id.movieNavigation);
         return output;
     }
-
 }
+
+//class BottomNavigationViewHelper {
+//
+//    static void removeShiftMode(BottomNavigationView view) {
+//        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
+//        try {
+//            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
+//            shiftingMode.setAccessible(true);
+//            shiftingMode.setBoolean(menuView, false);
+//            shiftingMode.setAccessible(false);
+//            for (int i = 0; i < menuView.getChildCount(); i++) {
+//                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+//                item.setShiftingMode(false);
+//                // set once again checked value, so view will be updated
+//                item.setChecked(item.getItemData().isChecked());
+//            }
+//        } catch (NoSuchFieldException e) {
+//            Log.e("ERROR NO SUCH FIELD", "Unable to get shift mode field");
+//        } catch (IllegalAccessException e) {
+//            Log.e("ERROR ILLEGAL ALG", "Unable to change value of shift mode");
+//        }
+//    }
+//}
