@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersViewHolder> {
     public TrailersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.tv_row_layout,null);
+//        View layout = inflater.inflate(R.layout.trailer_row_layout,null);
         return new TrailersViewHolder(layout);
     }
 
@@ -40,6 +42,8 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersViewHolder> {
         }
         Picasso.get().load("http://img.youtube.com/vi/"+video.key+"/hqdefault.jpg").resize(550,400).centerCrop().into(holder.thumbnail);
         holder.textView.setText(video.name);
+
+//        holder.playerView
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

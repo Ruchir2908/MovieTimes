@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +39,8 @@ public class MovieDetails extends AppCompatActivity {
     com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
     MoviesDAO moviesDAO, watchedMoviesDAO;
     String genreList;
+    YouTubePlayerView playerView;
+    YouTubePlayer.OnInitializedListener listener;
 
     Retrofit retrofit;
     MovieTimesService service;
@@ -64,6 +70,7 @@ public class MovieDetails extends AppCompatActivity {
         backdropImageView = findViewById(R.id.backdropImageView);
         favouriteFAB = findViewById(R.id.favoriteFAB);
         watchedFAB = findViewById(R.id.watchedFAB);
+        playerView = findViewById(R.id.youtube_player);
     }
 
     @Override
@@ -124,33 +131,35 @@ public class MovieDetails extends AppCompatActivity {
         similarRV.setLayoutManager(similarLayoutManager);
         reviewRV.setLayoutManager(reviewsLayoutManager);
 
-        Call<GenreObject> callGenres = service.getMovieGenres(API_KEY);
-        callGenres.enqueue(new Callback<GenreObject>() {
-            @Override
-            public void onResponse(Call<GenreObject> call, Response<GenreObject> response) {
-                if(response.body()!=null){
-//                    ArrayList<Genres> genre = new ArrayList<>();
-//                    genre.addAll(response.body());
-                    genres.clear();
-                    genres.addAll(response.body().genres);
-                    genreList = "";
-                }
-            }
 
-            @Override
-            public void onFailure(Call<GenreObject> call, Throwable t) {
 
-            }
-        });
+//        Call<GenreObject> callGenres = service.getMovieGenres(API_KEY);
+//        callGenres.enqueue(new Callback<GenreObject>() {
+//            @Override
+//            public void onResponse(Call<GenreObject> call, Response<GenreObject> response) {
+//                if(response.body()!=null){
+////                    ArrayList<Genres> genre = new ArrayList<>();
+////                    genre.addAll(response.body());
+//                    genres.clear();
+//                    genres.addAll(response.body().genres);
+//                    genreList = "";
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GenreObject> call, Throwable t) {
+//
+//            }
+//        });
+//
+//        for(int i=0;i<genres.size();i++){
+//            if(genres.contains(movie.genreIds.get(i))){
+//                genreList.concat(genres.get(i).name+",");
+//            }
+//
+//        }
 
-        for(int i=0;i<genres.size();i++){
-            if(genres.contains(movie.genreIds.get(i))){
-                genreList.concat(genres.get(i).name+",");
-            }
-
-        }
-
-        genresTV.setText(genreList);
+//        genresTV.setText(genreList);
 
         Call<Reviews> callReviews = service.getReviews(movie.id,API_KEY);
         callReviews.enqueue(new Callback<Reviews>() {
@@ -244,6 +253,18 @@ public class MovieDetails extends AppCompatActivity {
             public void onFailure(Call<CastCrew> call, Throwable t) {
             }
         });
+
+//        listener = new YouTubePlayer.OnInitializedListener() {
+//            @Override
+//            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+//                youTubePlayer.loadVideo(videos.get().);
+//            }
+//
+//            @Override
+//            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+//
+//            }
+//        }
 
         favouriteFAB.setOnClickListener(new View.OnClickListener() {
             @Override
