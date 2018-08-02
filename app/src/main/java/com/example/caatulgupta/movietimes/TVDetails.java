@@ -33,7 +33,7 @@ public class TVDetails extends AppCompatActivity {
     RecyclerView trailersRV, castRV, recommendationsRV, similarRV, reviewRV;
     ImageView posterImageView, backdropImageView;
     com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
-    TVshowsDAO tVshowsDAO, watchedTVshowsDAO;
+    TVshowsDAO tVshowsDAO, watchedTVshowsDAO, recommendedTVshowsDAO;
 
     Retrofit retrofit;
     TVTimesService service;
@@ -77,6 +77,8 @@ public class TVDetails extends AppCompatActivity {
         tVshowsDAO = tvDatabase.getTVshowDAO();
         TVDatabase watchedTVDatabase = Room.databaseBuilder(getApplicationContext(),TVDatabase.class,"watched_tvdb").allowMainThreadQueries().build();
         watchedTVshowsDAO = watchedTVDatabase.getTVshowDAO();
+        final TVDatabase recommendationsTVDatabase = Room.databaseBuilder(getApplicationContext(),TVDatabase.class,"recommended_tvdb").allowMainThreadQueries().build();
+        recommendedTVshowsDAO = recommendationsTVDatabase.getTVshowDAO();
 
         Intent intent = getIntent();
         final TV show = (TV)intent.getSerializableExtra("show");
@@ -180,7 +182,6 @@ public class TVDetails extends AppCompatActivity {
                     TVCategory tvCategory = response.body();
                     recommendationsShows.clear();
                     recommendationsShows.addAll(tvCategory.shows);
-                    recommendationsAdapter.notifyDataSetChanged();
                 }else{
                 }
 
@@ -217,9 +218,17 @@ public class TVDetails extends AppCompatActivity {
                 if(ids.contains(show.id)){
                     tVshowsDAO.removeShow(show);
                     Toast.makeText(TVDetails.this, "Favourite removed", Toast.LENGTH_SHORT).show();
+                    recommendedTVshowsDAO.removeShows(recommendationsShows);
+                    FavouriteShows.adapter.notifyDataSetChanged();
                 }else{
                     tVshowsDAO.addShow(show);
                     Toast.makeText(TVDetails.this, "Favourite added", Toast.LENGTH_SHORT).show();
+                    for(int i=0;i<recommendationsShows.size();i++){
+                        if(!recommendedTVshowsDAO.getShowIds().contains(recommendationsShows.get(i).id)){
+                            recommendedTVshowsDAO.addShow(recommendationsShows.get(i));
+                        }
+                    }
+                    FavouriteShows.adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -231,9 +240,17 @@ public class TVDetails extends AppCompatActivity {
                 if(ids.contains(show.id)){
                     watchedTVshowsDAO.removeShow(show);
                     Toast.makeText(TVDetails.this, "Removed from watched", Toast.LENGTH_SHORT).show();
+                    recommendedTVshowsDAO.removeShows(recommendationsShows);
+                    WatchedShows.adapter.notifyDataSetChanged();
                 }else{
                     watchedTVshowsDAO.addShow(show);
                     Toast.makeText(TVDetails.this, "Added to watched", Toast.LENGTH_SHORT).show();
+                    for(int i=0;i<recommendationsShows.size();i++){
+                        if(!recommendedTVshowsDAO.getShowIds().contains(recommendationsShows.get(i).id)){
+                            recommendedTVshowsDAO.addShow(recommendationsShows.get(i));
+                        }
+                    }
+                    WatchedShows.adapter.notifyDataSetChanged();
                 }
             }
         });

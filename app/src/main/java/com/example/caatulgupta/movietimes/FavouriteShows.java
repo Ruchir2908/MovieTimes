@@ -15,7 +15,7 @@ public class FavouriteShows extends Fragment {
 
     TVshowsDAO tVshowsDAO;
     RecyclerView recyclerView;
-    Adapter adapter;
+    public static Adapter adapter;
 
     public FavouriteShows() {
     }

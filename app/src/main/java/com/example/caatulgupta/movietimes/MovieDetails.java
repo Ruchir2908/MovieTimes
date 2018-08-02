@@ -42,7 +42,7 @@ public class MovieDetails extends AppCompatActivity {
     RecyclerView trailersRV, castRV, recommendationsRV, similarRV, reviewRV;
     ImageView posterImageView,backdropImageView;
     com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
-    MoviesDAO moviesDAO, watchedMoviesDAO;
+    MoviesDAO moviesDAO, watchedMoviesDAO, recommendationMoviesDAO;
     String genreList;
     YouTubePlayerView playerView;
     YouTubePlayer.OnInitializedListener listener;
@@ -91,6 +91,8 @@ public class MovieDetails extends AppCompatActivity {
         moviesDAO = movieDatabase.getMovieDAO();
         MovieDatabase watchedMovieDatabase = Room.databaseBuilder(getApplicationContext(),MovieDatabase.class,"watched_moviedb").allowMainThreadQueries().build();
         watchedMoviesDAO = watchedMovieDatabase.getMovieDAO();
+        final MovieDatabase recommendedMovieDatabase = Room.databaseBuilder(getApplicationContext(),MovieDatabase.class,"recommended_moviedb").allowMainThreadQueries().build();
+        recommendationMoviesDAO = recommendedMovieDatabase.getMovieDAO();
 
         Intent intent = getIntent();
         final Movie movie = (Movie)intent.getSerializableExtra("movie");
@@ -165,6 +167,23 @@ public class MovieDetails extends AppCompatActivity {
 //        }
 
 //        genresTV.setText(genreList);
+
+        Call<MovieCategory> call2 = service.getRecommendations(movie.id,API_KEY);
+        call2.enqueue(new Callback<MovieCategory>() {
+            @Override
+            public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
+                if(response.body()!=null) {
+                    MovieCategory movieCategory = response.body();
+                    recommendationsMovies.clear();
+                    recommendationsMovies.addAll(movieCategory.movies);
+                }else{
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieCategory> call, Throwable t) {
+            }
+        });
 
         Call<Reviews> callReviews = service.getReviews(movie.id,API_KEY);
         callReviews.enqueue(new Callback<Reviews>() {
@@ -259,9 +278,17 @@ public class MovieDetails extends AppCompatActivity {
                 if(ids.contains(movie.id)){
                     moviesDAO.removeMovie(movie);
                     Toast.makeText(MovieDetails.this, "Favourite removed", Toast.LENGTH_SHORT).show();
+                    recommendationMoviesDAO.removeMovies(recommendationsMovies);
+                    FavouriteMovies.adapter.notifyDataSetChanged();
                 }else{
                     moviesDAO.addMovie(movie);
                     Toast.makeText(MovieDetails.this, "Favourite added", Toast.LENGTH_SHORT).show();
+                    for(int i=0;i<recommendationsMovies.size();i++){
+                        if(!recommendationMoviesDAO.getMovieIds().contains(recommendationsMovies.get(i).id)){
+                            recommendationMoviesDAO.addMovie(recommendationsMovies.get(i));
+                        }
+                    }
+                    FavouriteMovies.adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -273,9 +300,17 @@ public class MovieDetails extends AppCompatActivity {
                 if(ids.contains(movie.id)){
                     watchedMoviesDAO.removeMovie(movie);
                     Toast.makeText(MovieDetails.this, "Removed from watched", Toast.LENGTH_SHORT).show();
+                    recommendationMoviesDAO.removeMovies(recommendationsMovies);
+                    WatchedMovies.adapter.notifyDataSetChanged();
                 }else{
                     watchedMoviesDAO.addMovie(movie);
                     Toast.makeText(MovieDetails.this, "Added to watched", Toast.LENGTH_SHORT).show();
+                    for(int i=0;i<recommendationsMovies.size();i++){
+                        if(!recommendationMoviesDAO.getMovieIds().contains(recommendationsMovies.get(i).id)){
+                            recommendationMoviesDAO.addMovie(recommendationsMovies.get(i));
+                        }
+                    }
+                    WatchedMovies.adapter.notifyDataSetChanged();
                 }
             }
         });
