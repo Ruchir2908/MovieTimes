@@ -25,7 +25,7 @@ import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MovieNowShowingFragment.NowShowingFragmentCallBack {
 
-    public static String API_KEY = "98247b6d9263ea7606524c339461f256";
+    public static String API_KEY = "";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager homeViewPager, favViewPager, watchViewPager, recommendationViewPager;
     BottomNavigationView movieNavigation, tvNavigation;

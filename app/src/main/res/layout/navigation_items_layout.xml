@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerView"
-            android:padding="15dp"
+        android:padding="15dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/empty"
+        android:visibility="visible"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/empty"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/nothingToShow"/>
+
+    <TextView
+        android:id="@+id/nothingToShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textColor="@color/colorBlack"
+        android:layout_centerInParent="true"
+        android:text="Nothing to show !"
+        android:visibility="visible"/>
+
+</RelativeLayout>
