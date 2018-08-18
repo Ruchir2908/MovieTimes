@@ -31,7 +31,7 @@ public class MovieTopRatedFragment extends Fragment {
     ArrayList<Movie> movies = new ArrayList<>();
     ProgressBar topRatedProgressBar;
     boolean isScrolling = false;
-    int currentItems,totalItems,scrolledItems,page = 3;
+    int currentItems,totalItems,scrolledItems,page = 1;
 
     public MovieTopRatedFragment() {
     }
@@ -111,7 +111,7 @@ public class MovieTopRatedFragment extends Fragment {
                             movies.addAll(movieCategory.movies);
                             adapter.notifyDataSetChanged();
                         }else{
-                            Toast.makeText(getContext(), "BYEEE", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "No Internet connection", Toast.LENGTH_SHORT).show();
                         }
 
                     }

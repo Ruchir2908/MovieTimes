@@ -82,7 +82,8 @@ public class TVDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         final TV show = (TV)intent.getSerializableExtra("show");
-        releaseDateTV.setText(show.airDate);
+        String[] releaseDates = show.airDate.split("-");
+        releaseDateTV.setText(releaseDates[2]+"/"+releaseDates[1]+"/"+releaseDates[0]);
         ratingTV.setText(show.avgVote+"");
         genresTV.setText(show.genres+"");
         overviewTV.setText(show.overview);
@@ -219,7 +220,6 @@ public class TVDetails extends AppCompatActivity {
                     tVshowsDAO.removeShow(show);
                     Toast.makeText(TVDetails.this, "Favourite removed", Toast.LENGTH_SHORT).show();
                     recommendedTVshowsDAO.removeShows(recommendationsShows);
-                    FavouriteShows.adapter.notifyDataSetChanged();
                 }else{
                     tVshowsDAO.addShow(show);
                     Toast.makeText(TVDetails.this, "Favourite added", Toast.LENGTH_SHORT).show();
@@ -228,7 +228,6 @@ public class TVDetails extends AppCompatActivity {
                             recommendedTVshowsDAO.addShow(recommendationsShows.get(i));
                         }
                     }
-                    FavouriteShows.adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -241,7 +240,6 @@ public class TVDetails extends AppCompatActivity {
                     watchedTVshowsDAO.removeShow(show);
                     Toast.makeText(TVDetails.this, "Removed from watched", Toast.LENGTH_SHORT).show();
                     recommendedTVshowsDAO.removeShows(recommendationsShows);
-                    WatchedShows.adapter.notifyDataSetChanged();
                 }else{
                     watchedTVshowsDAO.addShow(show);
                     Toast.makeText(TVDetails.this, "Added to watched", Toast.LENGTH_SHORT).show();
@@ -250,7 +248,6 @@ public class TVDetails extends AppCompatActivity {
                             recommendedTVshowsDAO.addShow(recommendationsShows.get(i));
                         }
                     }
-                    WatchedShows.adapter.notifyDataSetChanged();
                 }
             }
         });

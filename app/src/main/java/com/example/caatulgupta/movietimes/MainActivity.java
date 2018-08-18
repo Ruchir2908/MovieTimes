@@ -23,15 +23,13 @@ import android.widget.Toast;
 
 import retrofit2.Call;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MovieNowShowingFragment.NowShowingFragmentCallBack {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static String API_KEY = "";
+    public static String API_KEY = "98247b6d9263ea7606524c339461f256";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager homeViewPager, favViewPager, watchViewPager, recommendationViewPager;
     BottomNavigationView movieNavigation, tvNavigation;
     SearchView searchView;
-    boolean moviesTabSelected = false, TVShowsTabSelected = false;
-    boolean homeSelected = true, favouriteSelected = false, watchedSelected = false, recommendationsSelected = false;
     private TabLayout tabLayout;
 
     @Override
@@ -99,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         homeViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -128,8 +125,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
-        MenuItem fav = menu.findItem(R.id.favourite);
-        MenuItem watch = menu.findItem(R.id.watched);
 //        searchView = (SearchView)menuItem.getActionView();
 
 //        searchView.setQueryHint("Movie, TV Shows");
@@ -151,32 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void updateResults(String s) {
-
-//        Call<SearchResponse> call =
-
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if(id == R.id.favourite){
-            if(moviesTabSelected){
-                
-            }else if(TVShowsTabSelected){
-
-            }
-        }
-        if(id == R.id.watched){
-            if(moviesTabSelected){
-
-            }else if(TVShowsTabSelected){
-
-            }
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -185,61 +157,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         if (id == R.id.home) {
             Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-            homeSelected = true;
-            favouriteSelected = false;
-            watchedSelected = false;
-            recommendationsSelected = false;
-
             homeViewPager.setVisibility(View.VISIBLE);
             favViewPager.setVisibility(View.GONE);
             watchViewPager.setVisibility(View.GONE);
             recommendationViewPager.setVisibility(View.GONE);
         } else if (id == R.id.favourite) {
             Toast.makeText(this, "Favourite", Toast.LENGTH_SHORT).show();
-            homeSelected = false;
-            favouriteSelected = true;
-            watchedSelected = false;
-            recommendationsSelected = false;
-
             homeViewPager.setVisibility(View.GONE);
             favViewPager.setVisibility(View.VISIBLE);
             watchViewPager.setVisibility(View.GONE);
             recommendationViewPager.setVisibility(View.GONE);
-
             favViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(favViewPager));
-
-
         } else if (id == R.id.watched) {
             Toast.makeText(this, "Watched", Toast.LENGTH_SHORT).show();
-            homeSelected = false;
-            favouriteSelected = false;
-            watchedSelected = true;
-            recommendationsSelected = false;
-
             homeViewPager.setVisibility(View.GONE);
             favViewPager.setVisibility(View.GONE);
             watchViewPager.setVisibility(View.VISIBLE);
             recommendationViewPager.setVisibility(View.GONE);
-
             watchViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(watchViewPager));
-
         } else if (id == R.id.recommendations) {
             Toast.makeText(this, "Recommendations", Toast.LENGTH_SHORT).show();
-            homeSelected = false;
-            favouriteSelected = false;
-            watchedSelected = false;
-            recommendationsSelected = true;
-
             homeViewPager.setVisibility(View.GONE);
             favViewPager.setVisibility(View.GONE);
             watchViewPager.setVisibility(View.GONE);
             recommendationViewPager.setVisibility(View.VISIBLE);
-
             recommendationViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(recommendationViewPager));
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -261,30 +206,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
             switch (position){
-                case 0:
-                    moviesTabSelected = true;
-                    TVShowsTabSelected = false;
-//                    if(favouriteSelected) return new FavouriteMovies();
-//                    else if(watchedSelected) return new WatchedMovies();
-//                    else if(recommendationsSelected) return new RecommendationMovies();
-                    return new MoviesFragment();
-                case 1:
-                    TVShowsTabSelected = true;
-                    moviesTabSelected = false;
-//                    else if(favouriteSelected) return new FavouriteShows();
-//                    else if(watchedSelected) return new WatchedShows();
-//                    else if(recommendationsSelected) return new RecommendationShows();
-                        return new TVShowsFragment();
+                case 0: return new MoviesFragment();
+                case 1: return new TVShowsFragment();
             }
             return null;
         }
 
 
 
-    }
-
-    @Override
-    public void onNowShowingMovieSelected(Movie movie) {
-        Toast.makeText(this, movie.title, Toast.LENGTH_SHORT).show();
     }
 }

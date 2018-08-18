@@ -19,7 +19,7 @@ public class FavouriteShows extends Fragment {
     RecyclerView recyclerView;
     TextView nothingToShow;
     ImageView empty;
-    public static Adapter adapter;
+    Adapter adapter;
 
     public FavouriteShows() {
     }

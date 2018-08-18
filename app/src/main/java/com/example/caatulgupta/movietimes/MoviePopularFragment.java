@@ -31,7 +31,7 @@ public class MoviePopularFragment extends Fragment {
     ArrayList<Movie> movies = new ArrayList<>();
     ProgressBar popularProgressBar;
     boolean isScrolling = false;
-    int currentItems,totalItems,scrolledItems,page = 2;
+    int currentItems,totalItems,scrolledItems,page = 1;
 
     public MoviePopularFragment() {
     }
@@ -72,26 +72,6 @@ public class MoviePopularFragment extends Fragment {
                 }
             }
         });
-
-//        Call<MovieCategory> call = service.getMovies("now_playing",API_KEY,1);
-//        call.enqueue(new Callback<MovieCategory>() {
-//            @Override
-//            public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
-//                if(response.body()!=null) {
-//                    MovieCategory movieCategory = response.body();
-//                    movies.clear();
-//                    movies.addAll(movieCategory.movies);
-//                    adapter.notifyDataSetChanged();
-//                }else{
-//                    Toast.makeText(getContext(), "BYEEE", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MovieCategory> call, Throwable t) {
-//            }
-//        });
         fetchData();
         return output;
     }
@@ -107,11 +87,10 @@ public class MoviePopularFragment extends Fragment {
                     public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
                         if(response.body()!=null) {
                             MovieCategory movieCategory = response.body();
-//                            movies.clear();
                             movies.addAll(movieCategory.movies);
                             adapter.notifyDataSetChanged();
                         }else{
-                            Toast.makeText(getContext(), "BYEEE", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "No Internet connection", Toast.LENGTH_SHORT).show();
                         }
 
                     }

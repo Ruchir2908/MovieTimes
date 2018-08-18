@@ -39,7 +39,7 @@ import static java.lang.System.in;
 public class MovieDetails extends AppCompatActivity {
 
     TextView releaseDateTV, languageTV, ratingTV, genresTV, overviewTV;
-    RecyclerView trailersRV, castRV, recommendationsRV, similarRV, reviewRV;
+    RecyclerView trailersRV, castRV, similarRV, reviewRV;
     ImageView posterImageView,backdropImageView;
     com.getbase.floatingactionbutton.FloatingActionButton favouriteFAB, watchedFAB;
     MoviesDAO moviesDAO, watchedMoviesDAO, recommendationMoviesDAO;
@@ -49,7 +49,7 @@ public class MovieDetails extends AppCompatActivity {
 
     Retrofit retrofit;
     MovieTimesService service;
-    Adapter similarAdapter, recommendationsAdapter;
+    Adapter similarAdapter;
     ReviewsAdapter reviewsAdapter;
     TrailersAdapter  trailerAdapter;
     CastAdapter castAdapter;
@@ -69,7 +69,6 @@ public class MovieDetails extends AppCompatActivity {
         trailersRV = findViewById(R.id.trailersRecyclerView);
         castRV = findViewById(R.id.castRecyclerView);
         similarRV = findViewById(R.id.similarRecyclerView);
-//        recommendationsRV = findViewById(R.id.recommendationsRecyclerView);
         reviewRV = findViewById(R.id.reviewRecyclerView);
         posterImageView = findViewById(R.id.posterImageView);
         backdropImageView = findViewById(R.id.backdropImageView);
@@ -96,7 +95,8 @@ public class MovieDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Movie movie = (Movie)intent.getSerializableExtra("movie");
-        releaseDateTV.setText(movie.releaseDate);
+        String[] releaseDates = movie.releaseDate.split("-");
+        releaseDateTV.setText(releaseDates[2]+"/"+releaseDates[1]+"/"+releaseDates[0]);
         if(movie.language.equals("en")){
             languageTV.setText("Eng");
         }else if(movie.language.equals("hi")){
@@ -115,58 +115,24 @@ public class MovieDetails extends AppCompatActivity {
         service = ApiClient.getService();
         similarAdapter = new Adapter(similarMovies,null,this,1,"movie");
         trailerAdapter = new TrailersAdapter(videos,this);
-        recommendationsAdapter = new Adapter(recommendationsMovies,null,this,1,"movie");
         castAdapter = new CastAdapter(casts,this);
         reviewsAdapter = new ReviewsAdapter(reviews,this);
 
         trailersRV.setAdapter(trailerAdapter);
         castRV.setAdapter(castAdapter);
-//        recommendationsRV.setAdapter(recommendationsAdapter);
         similarRV.setAdapter(similarAdapter);
         reviewRV.setAdapter(reviewsAdapter);
 
 
         LinearLayoutManager trailersLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager castLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        final LinearLayoutManager recommendationsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager similarLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager reviewsLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
         trailersRV.setLayoutManager(trailersLayoutManager);
         castRV.setLayoutManager(castLayoutManager);
-//        recommendationsRV.setLayoutManager(recommendationsLayoutManager);
         similarRV.setLayoutManager(similarLayoutManager);
         reviewRV.setLayoutManager(reviewsLayoutManager);
-
-
-
-//        Call<GenreObject> callGenres = service.getMovieGenres(API_KEY);
-//        callGenres.enqueue(new Callback<GenreObject>() {
-//            @Override
-//            public void onResponse(Call<GenreObject> call, Response<GenreObject> response) {
-//                if(response.body()!=null){
-////                    ArrayList<Genres> genre = new ArrayList<>();
-////                    genre.addAll(response.body());
-//                    genres.clear();
-//                    genres.addAll(response.body().genres);
-//                    genreList = "";
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GenreObject> call, Throwable t) {
-//
-//            }
-//        });
-//
-//        for(int i=0;i<genres.size();i++){
-//            if(genres.contains(movie.genreIds.get(i))){
-//                genreList.concat(genres.get(i).name+",");
-//            }
-//
-//        }
-
-//        genresTV.setText(genreList);
 
         Call<MovieCategory> call2 = service.getRecommendations(movie.id,API_KEY);
         call2.enqueue(new Callback<MovieCategory>() {
@@ -279,7 +245,6 @@ public class MovieDetails extends AppCompatActivity {
                     moviesDAO.removeMovie(movie);
                     Toast.makeText(MovieDetails.this, "Favourite removed", Toast.LENGTH_SHORT).show();
                     recommendationMoviesDAO.removeMovies(recommendationsMovies);
-                    FavouriteMovies.adapter.notifyDataSetChanged();
                 }else{
                     moviesDAO.addMovie(movie);
                     Toast.makeText(MovieDetails.this, "Favourite added", Toast.LENGTH_SHORT).show();
@@ -288,7 +253,6 @@ public class MovieDetails extends AppCompatActivity {
                             recommendationMoviesDAO.addMovie(recommendationsMovies.get(i));
                         }
                     }
-                    FavouriteMovies.adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -301,7 +265,6 @@ public class MovieDetails extends AppCompatActivity {
                     watchedMoviesDAO.removeMovie(movie);
                     Toast.makeText(MovieDetails.this, "Removed from watched", Toast.LENGTH_SHORT).show();
                     recommendationMoviesDAO.removeMovies(recommendationsMovies);
-                    WatchedMovies.adapter.notifyDataSetChanged();
                 }else{
                     watchedMoviesDAO.addMovie(movie);
                     Toast.makeText(MovieDetails.this, "Added to watched", Toast.LENGTH_SHORT).show();
@@ -310,7 +273,6 @@ public class MovieDetails extends AppCompatActivity {
                             recommendationMoviesDAO.addMovie(recommendationsMovies.get(i));
                         }
                     }
-                    WatchedMovies.adapter.notifyDataSetChanged();
                 }
             }
         });

@@ -7,6 +7,5 @@ import android.arch.persistence.room.RoomDatabase;
 public abstract class MovieDatabase extends RoomDatabase {
 
     abstract MoviesDAO getMovieDAO();
-//    abstract MoviesDAO getWatchedMovieDAO();
 
 }

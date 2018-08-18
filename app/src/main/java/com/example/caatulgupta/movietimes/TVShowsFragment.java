@@ -58,6 +58,7 @@ public class TVShowsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bottomNavigationView = view.findViewById(R.id.tvNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(tvOnNavigationItemSelectedListener);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
     }
 
     @Override

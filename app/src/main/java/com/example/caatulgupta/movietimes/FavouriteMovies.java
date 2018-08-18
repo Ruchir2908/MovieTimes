@@ -22,7 +22,7 @@ public class FavouriteMovies extends Fragment {
     RecyclerView recyclerView;
     TextView nothingToShow;
     ImageView empty;
-    public static Adapter adapter;
+    Adapter adapter;
 
     public FavouriteMovies() {
     }

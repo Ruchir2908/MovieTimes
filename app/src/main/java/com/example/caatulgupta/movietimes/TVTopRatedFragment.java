@@ -90,7 +90,7 @@ public class TVTopRatedFragment extends Fragment {
                             shows.addAll(tvCategory.shows);
                             adapter.notifyDataSetChanged();
                         }else{
-                            Toast.makeText(getContext(), "BYEEE", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "No Internet connection", Toast.LENGTH_SHORT).show();
                         }
 
                     }

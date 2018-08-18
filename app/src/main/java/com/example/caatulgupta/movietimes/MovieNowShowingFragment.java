@@ -30,7 +30,6 @@ public class MovieNowShowingFragment extends Fragment {
     MovieTimesService service;
     Adapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
-    NowShowingFragmentCallBack listener;
     ProgressBar nowShowingProgressBar;
     boolean isScrolling = false;
     int currentItems,totalItems,scrolledItems,page = 1;
@@ -41,9 +40,6 @@ public class MovieNowShowingFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof NowShowingFragmentCallBack){
-            listener = (NowShowingFragmentCallBack)context;
-        }
     }
 
     @Override
@@ -97,11 +93,10 @@ public class MovieNowShowingFragment extends Fragment {
                     public void onResponse(Call<MovieCategory> call, Response<MovieCategory> response) {
                         if(response.body()!=null) {
                             MovieCategory movieCategory = response.body();
-//                            movies.clear();
                             movies.addAll(movieCategory.movies);
                             adapter.notifyDataSetChanged();
                         }else{
-                            Toast.makeText(getContext(), "BYEEE", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -116,9 +111,4 @@ public class MovieNowShowingFragment extends Fragment {
         },0);
 
     }
-
-    public interface NowShowingFragmentCallBack{
-        void onNowShowingMovieSelected(Movie movie);
-    }
-
 }
