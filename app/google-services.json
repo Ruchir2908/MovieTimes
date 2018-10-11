@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "826675401820",
+    "firebase_url": "https://movietimes-9fbde.firebaseio.com",
+    "project_id": "movietimes-9fbde",
+    "storage_bucket": "movietimes-9fbde.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826675401820:android:7ca71ffc2f6b6c4d",
+        "android_client_info": {
+          "package_name": "com.example.caatulgupta.movietimes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826675401820-nu9s0427j4d8ehlv905d3u8jcpb1rtrv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.caatulgupta.movietimes",
+            "certificate_hash": "117723d6ab2c3da99bfe4d268eba32e296e3fdb4"
+          }
+        },
+        {
+          "client_id": "826675401820-ddr8cmjanb2cdcls8kcc2579vp5advnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzt0YZPeaJuF09-G8RMikihuSVEiRUyAg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826675401820-ddr8cmjanb2cdcls8kcc2579vp5advnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
